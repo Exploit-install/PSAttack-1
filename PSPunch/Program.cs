@@ -9,7 +9,7 @@ namespace PSPunch
     {
         static void Main(string[] args)
         {
-            Console.Write("aps> ");
+            Console.Write("PS#> ");
             String cmd = Console.ReadLine();
 
             Runspace rs = RunspaceFactory.CreateRunspace();
