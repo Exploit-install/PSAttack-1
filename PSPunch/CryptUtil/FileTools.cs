@@ -40,7 +40,7 @@ namespace PSPunch.CryptUtil
             outputFileStream.Close();
         }
 
-        public static MemoryStream DecryptFile(string inputFile, string key)
+        public static MemoryStream DecryptFile(Stream inputStream, string key)
         {
             byte[] keyBytes = Encoding.Unicode.GetBytes(key);
 
@@ -51,11 +51,10 @@ namespace PSPunch.CryptUtil
             rijndaelCSP.IV = derivedKey.GetBytes(rijndaelCSP.BlockSize / 8);
             ICryptoTransform decryptor = rijndaelCSP.CreateDecryptor();
 
-            FileStream inputFileStream = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
+            //FileStream inputFileStream = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
 
-            CryptoStream decryptStream = new CryptoStream(inputFileStream, decryptor, CryptoStreamMode.Read);
-
-            byte[] inputFileData = new byte[(int)inputFileStream.Length];
+            CryptoStream decryptStream = new CryptoStream(inputStream, decryptor, CryptoStreamMode.Read);
+            byte[] inputFileData = new byte[(int)inputStream.Length];
             string contents = new StreamReader(decryptStream).ReadToEnd();
             byte[] unicodes = Encoding.Unicode.GetBytes(contents);
 
@@ -68,7 +67,7 @@ namespace PSPunch.CryptUtil
             rijndaelCSP.Clear();
 
             decryptStream.Close();
-            inputFileStream.Close();
+            inputStream.Close();
             return outputMemoryStream;
         }
     }
