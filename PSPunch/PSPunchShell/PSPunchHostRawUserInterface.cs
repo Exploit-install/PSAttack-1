@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation.Host;
 using System.Text;
-using System.Threading.Tasks;
+// using System.Threading.Tasks;
 
 namespace PSPunch.PSPunchShell
 {
@@ -25,7 +25,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return new System.Management.Automation.Host.Size(80, 80);
+                return new System.Management.Automation.Host.Size(120, 120);
             }
             set
             {
