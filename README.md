@@ -12,7 +12,7 @@ PSPunch includes the following modules and commands preinstalled and ready to go
   - Invoke-Mimikatz
   - Invoke-GPPPassword
   - Invoke-NinjaCopy
-* [PowerShell Empire PowerTools](https://github.com/PowerShellEmpire/PowerTools)
+* [PowerTools](https://github.com/PowerShellEmpire/PowerTools)
   - PowerUp
   - PowerView
 
