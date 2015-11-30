@@ -7,9 +7,8 @@ PSPunch combines some of the best projects in the infosec powershell community i
 1. It doesn't rely on powershell.exe. Instead it calls powershell directly through the dotNet framework.
 2. The modules that are bundled with the exe are encrypted. When PSPunch starts, they are decrypted into memory. The unencrypted payloads never touch disk, making it difficult for most antivirus engines to catch them.
 
-Offensively, PSPunch contains commands for Privilege Escalation, Recon and Data Exfilitration.
+Offensively, PSPunch contains commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
 
-PSPunch includes the following modules and commands preinstalled and ready to go:
 * [Powersploit](https://github.com/PowerShellMafia/PowerSploit)
   - Invoke-Mimikatz
   - Invoke-GPPPassword
