@@ -5,7 +5,7 @@ using PSPunch.CryptUtil;
 using System.IO;
 using System.Text;
 using System.Reflection;
-using PSPunch.CmdProcessing;
+using PSPunch.PSPunchInput;
 
 namespace PSPunch
 {

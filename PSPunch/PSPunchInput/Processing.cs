@@ -5,7 +5,7 @@ using System.Text;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchShell;
 
-namespace PSPunch.CmdProcessing
+namespace PSPunch.PSPunchInput
 {
     class Processing
     {
