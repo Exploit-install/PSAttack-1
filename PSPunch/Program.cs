@@ -5,13 +5,13 @@ using PSPunch.CryptUtil;
 using System.IO;
 using System.Text;
 using System.Reflection;
-
+using PSPunch.CmdProcessing;
 
 namespace PSPunch
 {
     class Program
     {
-        public static Runspace PSInit(PSPunchHost host)
+        static Runspace PSInit(PSPunchHost host)
         {
             Runspace runspace = RunspaceFactory.CreateRunspace(host);
             runspace.Open();
@@ -19,7 +19,7 @@ namespace PSPunch
             return runspace;
 
         }
-        public static void ImportModules(Runspace runspace, PSPunchHost host, Stream moduleStream)
+        static void ImportModules(Runspace runspace, PSPunchHost host, Stream moduleStream)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Modules.key.txt"));
@@ -42,26 +42,28 @@ namespace PSPunch
 
             while (true)
             {
-                string cmd = "";
+                PunchInput punchInput = new PunchInput();
                 int consoleTopPos = Console.CursorTop;
+                punchInput.loopPos = 0;
+                punchInput.inLoop = false;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(prompt);
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                ConsoleKeyInfo cmdKey = Console.ReadKey();
-                while (cmdKey.Key != ConsoleKey.Enter)
+                punchInput.keyInfo = Console.ReadKey();
+                while (punchInput.keyInfo.Key != ConsoleKey.Enter)
                 {
-                    cmd = Processing.CommandProcessor(cmd, cmdKey);
+                    punchInput = Processing.CommandProcessor(punchInput);
                     Console.SetCursorPosition(prompt.Length, consoleTopPos);
                     Console.Write(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(prompt.Length, consoleTopPos);
-                    Console.Write(cmd);
-                    cmdKey = Console.ReadKey();
+                    Console.Write(punchInput.cmd);
+                    punchInput.keyInfo = Console.ReadKey();
                 }
-                if (cmd == "exit")
+                if (punchInput.cmd == "exit")
                 {
                     return;
                 }
-                string output = Processing.PSExec(runspace, host, cmd);
+                string output = Processing.PSExec(runspace, host, punchInput.cmd);
                 Console.Write(output);
             }
         }

@@ -5,11 +5,10 @@ using System.Text;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchShell;
 
-namespace PSPunch
+namespace PSPunch.CmdProcessing
 {
     class Processing
     {
-        
         public static string PSExec(Runspace runspace, PSPunchHost host, string command)
         {
             using (Pipeline pipeline = runspace.CreatePipeline())
@@ -21,24 +20,24 @@ namespace PSPunch
             return ((PSPunchHostUserInterface)host.UI).Output;
         }
 
-        public static string CommandProcessor(string cmd, ConsoleKeyInfo cmdKey)
+        public static PunchInput CommandProcessor(PunchInput punchInput)
         {
-            if (cmdKey.Key == ConsoleKey.Backspace)
+            if (punchInput.keyInfo.Key == ConsoleKey.Backspace)
             {
-                if (cmd.Length > 0)
+                if (punchInput.cmd.Length > 0)
                 {
-                    cmd = cmd.Remove(cmd.Length - 1);
+                    punchInput.cmd = punchInput.cmd.Remove(punchInput.cmd.Length - 1);
                 }
             }
-            else if (cmdKey.Key == ConsoleKey.Tab)
+            else if (punchInput.keyInfo.Key == ConsoleKey.Tab)
             {
-                cmd = "Get-Command " + cmd + "*";
+                punchInput.cmd = "Get-Command " + punchInput.cmd + "*";
             }
             else
             {
-                cmd += cmdKey.KeyChar;
+                punchInput.cmd += punchInput.keyInfo.KeyChar;
             }
-            return cmd;
+            return punchInput;
         }
     }
 }

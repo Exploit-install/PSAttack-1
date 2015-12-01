@@ -67,9 +67,10 @@
     <Reference Include="System.Management.Automation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CmdProcessing\PunchInput.cs" />
     <Compile Include="CryptUtil\FileTools.cs" />
     <Compile Include="CryptUtil\Utils.cs" />
-    <Compile Include="Processing.cs" />
+    <Compile Include="CmdProcessing\Processing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSPunchShell\PSParameter.cs" />
