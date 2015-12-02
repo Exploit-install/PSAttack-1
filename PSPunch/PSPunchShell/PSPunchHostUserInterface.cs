@@ -20,6 +20,13 @@ namespace PSPunch.PSPunchShell
             _sb = new StringBuilder();
         }
 
+        private StringBuilder writeOut(string output)
+        {
+            _sb = new StringBuilder();
+            _sb.AppendLine(output);
+            return _sb;
+        }
+
         private PSPunchRawUserInterface PSPunchRawUI = new PSPunchRawUserInterface();
         public override PSHostRawUserInterface RawUI
         {
@@ -116,7 +123,9 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return _sb.ToString();
+                string outputStr = _sb.ToString();
+                _sb.Length = 0;
+                return outputStr;
             }
         }
 

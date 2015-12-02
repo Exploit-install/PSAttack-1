@@ -51,19 +51,12 @@ namespace PSPunch.CryptUtil
             rijndaelCSP.IV = derivedKey.GetBytes(rijndaelCSP.BlockSize / 8);
             ICryptoTransform decryptor = rijndaelCSP.CreateDecryptor();
 
-            //FileStream inputFileStream = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
-
             CryptoStream decryptStream = new CryptoStream(inputStream, decryptor, CryptoStreamMode.Read);
             byte[] inputFileData = new byte[(int)inputStream.Length];
             string contents = new StreamReader(decryptStream).ReadToEnd();
             byte[] unicodes = Encoding.Unicode.GetBytes(contents);
 
-            //FileStream outputFileStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
-            //outputFileStream.Write(inputFileData, 0, inputFileData.Length);
-            //outputFileStream.Flush();
-
             MemoryStream outputMemoryStream = new MemoryStream(unicodes);
-
             rijndaelCSP.Clear();
 
             decryptStream.Close();

