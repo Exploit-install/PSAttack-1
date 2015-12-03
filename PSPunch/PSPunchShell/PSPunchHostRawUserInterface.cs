@@ -142,7 +142,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                throw new NotImplementedException();
+                return "PSPUNCH!!";
             }
             set
             {
