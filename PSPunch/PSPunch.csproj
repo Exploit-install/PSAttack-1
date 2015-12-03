@@ -69,10 +69,10 @@
     <Reference Include="System.Management.Automation" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PSPunchInput\PunchInput.cs" />
+    <Compile Include="PSPunchProcessing\PunchState.cs" />
     <Compile Include="CryptUtil\FileTools.cs" />
     <Compile Include="CryptUtil\Utils.cs" />
-    <Compile Include="PSPunchInput\Processing.cs" />
+    <Compile Include="PSPunchProcessing\Processing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSPunchShell\PSParameter.cs" />
@@ -85,6 +85,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <EmbeddedResource Include="Modules\invoke-mimikatz.ps1.enc" />
+    <EmbeddedResource Include="Modules\invoke-gpppassword.ps1.enc" />
+    <EmbeddedResource Include="Modules\invoke-ninjacopy.ps1.enc" />
+    <EmbeddedResource Include="Modules\powerup.ps1.enc" />
+    <EmbeddedResource Include="Modules\powerview.ps1.enc" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\key.txt" />

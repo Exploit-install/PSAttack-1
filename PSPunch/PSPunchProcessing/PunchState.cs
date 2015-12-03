@@ -7,9 +7,9 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchShell;
 
-namespace PSPunch.PSPunchInput
+namespace PSPunch.PSPunchProcessing
 {
-    class PunchInput
+    class PunchState
     {
         // contents of cmd are what are executed
         public string cmd { get; set; }

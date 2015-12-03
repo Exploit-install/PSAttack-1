@@ -10,35 +10,6 @@ namespace PSPunch.CryptUtil
 {
     class FileTools
     {
-        public static void EncryptFile(string inputFile, string outputFile, string key)
-        {
-            byte[] keyBytes;
-            keyBytes = Encoding.Unicode.GetBytes(key);
-
-            Rfc2898DeriveBytes derivedKey = new Rfc2898DeriveBytes(key, keyBytes);
-
-            RijndaelManaged rijndaelCSP = new RijndaelManaged();
-            rijndaelCSP.Key = derivedKey.GetBytes(rijndaelCSP.KeySize / 8);
-            rijndaelCSP.IV = derivedKey.GetBytes(rijndaelCSP.BlockSize / 8);
-
-            ICryptoTransform encryptor = rijndaelCSP.CreateEncryptor();
-
-            FileStream inputFileStream = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
-
-            byte[] inputFileData = new byte[(int)inputFileStream.Length];
-            inputFileStream.Read(inputFileData, 0, (int)inputFileStream.Length);
-
-            FileStream outputFileStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
-
-            CryptoStream encryptStream = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write);
-            encryptStream.Write(inputFileData, 0, (int)inputFileStream.Length);
-            encryptStream.FlushFinalBlock();
-
-            rijndaelCSP.Clear();
-            encryptStream.Close();
-            inputFileStream.Close();
-            outputFileStream.Close();
-        }
 
         public static MemoryStream DecryptFile(Stream inputStream, string key)
         {
