@@ -17,9 +17,18 @@ Offensively, PSPunch contains commands for Privilege Escalation, Recon and Data 
   - Invoke-Mimikatz
   - Invoke-GPPPassword
   - Invoke-NinjaCopy
+  - Invoke-Shellcode
+  - Invoke-WMICommand
 * [PowerTools](https://github.com/PowerShellEmpire/PowerTools)
   - PowerUp
   - PowerView
+* [Nishang](https://github.com/samratashok/nishang)
+  - Gupt-Backdoor
+  - Do-Exfiltration
+  - DNS-TXT-Pwnage
+  - Get-Infromation
+  - Get-WLAN-Keys
+* [Powercat](https://github.com/besimorhino/powercat)
 
 #### How to use it
 PSPunch works best when you generate your own version through [PSAttack](https://www.github.com/jaredhaight/PSAttack). PSAttack will handle downloading PSPunch, updating the modules to the latest versions, encrypting them with a custom key and then compiling the whole thing into an executable.
