@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchShell;
-using System.Collections.ObjectModel;
+using PSPunch.PSPunchDisplay;
 
 namespace PSPunch.PSPunchProcessing
 {
@@ -26,20 +27,22 @@ namespace PSPunch.PSPunchProcessing
                 {
                     pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output); pipeline.Commands.Add("out-default");
                 }
-
                 punchState.results = pipeline.Invoke();
                 pipeline.Dispose();
             }
             //Clear out command so it doesn't get echo'd out to console again.
             punchState.ClearIO();
+            if (!(punchState.inLoop))
+            {
+                punchState.cmdComplete = true;
+            }
             punchState.output = ((PSPunchHostUserInterface)punchState.host.UI).Output.ToString();
-            punchState.cmdComplete = true;
             return punchState;
         }
 
+        // This called everytime a key is pressed.
         public static PunchState CommandProcessor(PunchState punchState)
         {
-            string prompt = "PSPUNCH! #> ";
             punchState.output = null;
             if (punchState.keyInfo.Key == ConsoleKey.Backspace)
             {
@@ -51,6 +54,10 @@ namespace PSPunch.PSPunchProcessing
             }
             else if (punchState.keyInfo.Key == ConsoleKey.Tab)
             {
+                if (punchState.displayCmd.Length == 0)
+                {
+                    return punchState;
+                }
                 // setup autocomplete loop
                 if (punchState.inLoop)
                 {
@@ -76,7 +83,11 @@ namespace PSPunch.PSPunchProcessing
                 punchState.inLoop = true;
                 punchState.cmd = "Get-Command " + punchState.cmd + "*";
                 punchState = PSExec(punchState);
-                punchState.displayCmd = punchState.results[punchState.loopPos].BaseObject.ToString();
+                if (punchState.results.Count > 0)
+                {
+                    punchState.displayCmd = punchState.results[punchState.loopPos].BaseObject.ToString();
+                }
+                return punchState;
             }
             else if (punchState.keyInfo.Key == ConsoleKey.Enter)
             {
@@ -89,21 +100,16 @@ namespace PSPunch.PSPunchProcessing
                 else if (punchState.cmd == "clear")
                 {
                     Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(prompt);
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    punchState.displayCmd = "";
+                    Display.Prompt();
 
                 }
                 else if (punchState.cmd != null)
                 {
                     punchState = Processing.PSExec(punchState);
-                    int consoleTopPos = Console.CursorTop;
-                    Console.WriteLine("\n" + punchState.output);
-                    consoleTopPos = Console.CursorTop;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(prompt);
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Display.Output(punchState);
                 }
+                punchState.ClearIO();
             }
             else
             {

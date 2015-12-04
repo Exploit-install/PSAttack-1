@@ -69,9 +69,9 @@
     <Reference Include="System.Management.Automation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSPunchDisplay\Display.cs" />
     <Compile Include="PSPunchProcessing\PunchState.cs" />
     <Compile Include="CryptUtil\FileTools.cs" />
-    <Compile Include="CryptUtil\Utils.cs" />
     <Compile Include="PSPunchProcessing\Processing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +89,16 @@
     <EmbeddedResource Include="Modules\invoke-ninjacopy.ps1.enc" />
     <EmbeddedResource Include="Modules\powerup.ps1.enc" />
     <EmbeddedResource Include="Modules\powerview.ps1.enc" />
+    <EmbeddedResource Include="Modules\add-exfiltration.ps1.enc" />
+    <EmbeddedResource Include="Modules\dns_txt_pwnage.ps1.enc" />
+    <EmbeddedResource Include="Modules\do-exfiltration.ps1.enc" />
+    <EmbeddedResource Include="Modules\get-information.ps1.enc" />
+    <EmbeddedResource Include="Modules\get-wlan-keys.ps1.enc" />
+    <EmbeddedResource Include="Modules\gupt-backdoor.ps1.enc" />
+    <EmbeddedResource Include="Modules\invoke-shellcode.ps1.enc" />
+    <EmbeddedResource Include="Modules\invoke-wmicommand.ps1.enc" />
+    <EmbeddedResource Include="Modules\out-dnstxt.ps1.enc" />
+    <EmbeddedResource Include="Modules\powercat.ps1.enc" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\key.txt" />

@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Reflection;
 using PSPunch.PSPunchProcessing;
+using PSPunch.PSPunchDisplay;
 
 namespace PSPunch
 {
@@ -13,6 +14,17 @@ namespace PSPunch
     {
         static PunchState PSInit()
         {
+            //Display Loading Message
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(@"
+ ___  _____  ___              _    _
+| _ \/ _ \ \| _ \_  _ _ _  __| |_ | |
+|  _/\__ \> >  _/ || | ' \/ _| ' \|_|
+|_|  |___/_/|_|  \_,_|_||_\__|_||_(_)
+
+");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("PS>Punch is loading...");
 
             //Setup PS Host and runspace
             PunchState punchState = new PunchState();
@@ -28,6 +40,7 @@ namespace PSPunch
             {
                 if (resource.Contains(".enc"))
                 {
+                    Console.WriteLine("Decrypting: " + resource.ToString());
                     Stream moduleStream = assembly.GetManifestResourceStream(resource);
                     ImportModules(punchState, moduleStream);
                 }
@@ -37,6 +50,10 @@ namespace PSPunch
             string prompt = "PSPUNCH! #> ";
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
+
+            // Display alpha warning
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("PLEASE NOTE: This is an alpha release of PS>Punch. \nThere are plenty of bugs and not a lot of functionality. \n\nPlease view the release notes at https://www.github.com/jaredhaight/pspunch/releases for more info. \n");
 
             //Setup PS env
             punchState.cmd = "set-executionpolicy bypass -Scope process -Force";
@@ -52,18 +69,8 @@ namespace PSPunch
             Console.ForegroundColor = ConsoleColor.Yellow;
 
             return punchState;
+        }
 
-        }
-        static void DisplayOutput(PunchState punchState)
-        {
-            int consoleTopPos = Console.CursorTop;
-            string prompt = "PSPUNCH! #> ";
-            Console.WriteLine("\n" + punchState.output);
-            consoleTopPos = Console.CursorTop;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(prompt);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-        }
         static void ImportModules(PunchState punchState, Stream moduleStream)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -76,17 +83,12 @@ namespace PSPunch
 
         static void Main(string[] args)
         {
-            string prompt = "PSPUNCH! #> ";
             PunchState punchState = PSInit();
             while (true)
             {
                 punchState.keyInfo = Console.ReadKey();
                 punchState = Processing.CommandProcessor(punchState);
-                int consoleTopPos = Console.CursorTop;
-                Console.SetCursorPosition(prompt.Length, consoleTopPos);
-                Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(prompt.Length, consoleTopPos);
-                Console.Write(punchState.displayCmd);
+                Display.Output(punchState);
             }
         }
     }
