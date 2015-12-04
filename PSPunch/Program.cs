@@ -45,16 +45,7 @@ namespace PSPunch
                     ImportModules(punchState, moduleStream);
                 }
             }
-            
-            // Setup Console stage 1
-            string prompt = "PSPUNCH! #> ";
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.Clear();
-
-            // Display alpha warning
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("PLEASE NOTE: This is an alpha release of PS>Punch. \nThere are plenty of bugs and not a lot of functionality. \n\nPlease view the release notes at https://www.github.com/jaredhaight/pspunch/releases for more info. \n");
-
+                      
             //Setup PS env
             punchState.cmd = "set-executionpolicy bypass -Scope process -Force";
             Processing.PSExec(punchState);
@@ -62,11 +53,34 @@ namespace PSPunch
             punchState = Processing.PSExec(punchState);
 
             //Setup Console
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.Clear();
+
+            // Display alpha warning
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(@"
+############################################################
+#                                                          #
+#    PLEASE NOTE: This is an alpha release of PS>Punch.    #
+# There are plenty of bugs and not a lot of functionality. # 
+#                                                          #
+#         For more info view the release notes at          #
+#   https://www.github.com/jaredhaight/pspunch/releases    #
+#                                                          #
+############################################################
+
+");
+
+            // Display Version and build date:
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            string version = typeof(Program).Assembly.GetName().Version.ToString();
+            string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.BuildDate.txt")).ReadToEnd();
+            Console.WriteLine("Welcome to PS>Punch! This is version {0}. \nIt was built on {1}", version, buildDate);
+
+            // Display Prompt
             punchState.loopPos = 0;
             punchState.cmdComplete = false;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(prompt);
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Display.Prompt();
 
             return punchState;
         }
