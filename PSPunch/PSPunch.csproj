@@ -99,7 +99,6 @@
     <EmbeddedResource Include="Modules\invoke-wmicommand.ps1.enc" />
     <EmbeddedResource Include="Modules\out-dnstxt.ps1.enc" />
     <EmbeddedResource Include="Modules\powercat.ps1.enc" />
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\key.txt" />
