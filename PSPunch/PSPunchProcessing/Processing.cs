@@ -52,6 +52,41 @@ namespace PSPunch.PSPunchProcessing
                     punchState.displayCmd = punchState.displayCmd.Remove(punchState.displayCmd.Length - 1);
                 }
             }
+            else if (punchState.keyInfo.Key == ConsoleKey.UpArrow || punchState.keyInfo.Key == ConsoleKey.DownArrow)
+            {
+                if (punchState.history.Count > 0)
+                {
+                    if (!(punchState.inLoop))
+                    {
+                        punchState.inLoop = true;
+                        if (punchState.loopPos == 0)
+                        {
+                            punchState.loopPos = punchState.history.Count;
+
+                        }
+                    }
+                    if (punchState.keyInfo.Key == ConsoleKey.UpArrow && punchState.loopPos > 0)
+                    {
+                        punchState.loopPos -= 1;
+                        punchState.displayCmd = punchState.history[punchState.loopPos];
+                        
+                    }
+                    if (punchState.keyInfo.Key == ConsoleKey.DownArrow)
+                    {
+                        
+                        if ((punchState.loopPos +1) > (punchState.history.Count -1))
+                        {
+                            punchState.displayCmd = "";
+                        }
+                        else
+                        {
+                            punchState.loopPos += 1;
+                            punchState.displayCmd = punchState.history[punchState.loopPos];
+                        }
+                    }
+                }
+                return punchState;
+            }
             else if (punchState.keyInfo.Key == ConsoleKey.Tab)
             {
                 if (punchState.displayCmd.Length == 0)
@@ -93,6 +128,7 @@ namespace PSPunch.PSPunchProcessing
             {
                 punchState.ClearLoop();
                 punchState.cmd = punchState.displayCmd;
+                punchState.history.Add(punchState.cmd);
                 if (punchState.cmd == "exit")
                 {
                     System.Environment.Exit(0);

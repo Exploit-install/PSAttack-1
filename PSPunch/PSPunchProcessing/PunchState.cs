@@ -37,6 +37,8 @@ namespace PSPunch.PSPunchProcessing
         // set once execution of a command has completed, breaks the while loop in main.
         public bool cmdComplete { get; set; }
 
+        // command history
+        public List<string> history { get; set; }
         public void ClearLoop()
         {
             this.inLoop = false;
@@ -51,6 +53,11 @@ namespace PSPunch.PSPunchProcessing
             this.keyInfo = new ConsoleKeyInfo();
             this.cmdComplete = false;
             this.output = null;
+        }
+
+        public PunchState()
+        {
+            this.history = new List<string>();
         }
     }
 }
