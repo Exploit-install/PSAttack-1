@@ -1,9 +1,11 @@
-_PSPunch is in a super limited Proof of Concept state right now. A lot of this README is place holder indicating where the project will be at when it's "done". It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/)) is at [here](https://www.psattack.com/articles/20150212/psattack-v000001/)_
+_PSPunch is in a super limited Proof of Concept state right now. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/PSPunch/releases/)_
+
+_A lot of this README is place holder indicating where the project will be at when it's "done". It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/)) is at [here](https://www.psattack.com/articles/20150212/psattack-v000001/)_
 
 _If you have any questions or suggestions for PS>Attack and PSPunch, feel free to reachout on [twitter](https://www.twitter.com/jaredhaight) or via email: jaredhaight `at` prontonmail.com_
 
 ## PSPunch
-An offensive Powershell console aimed at making Windows pentesting a little easier.
+An portable console aimed at making pentesting with PowerShell a little easier.
 
 #### What is it
 PSPunch combines some of the best projects in the infosec powershell community into a self contained executable. It's designed to evade antivirus and Incident Response teams.
