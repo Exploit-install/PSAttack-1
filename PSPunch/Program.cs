@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Reflection;
 using System.Management.Automation.Runspaces;
 using PSPunch.CryptUtil;
 using System.IO;
@@ -73,7 +74,7 @@ namespace PSPunch
 
             // Display Version and build date:
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            string version = typeof(Program).Assembly.GetName().Version.ToString();
+            string version ="0.1.1-alpha";
             string buildString;
             string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.attackDate.txt")).ReadToEnd();
             if (attackDate.Length > 12)
