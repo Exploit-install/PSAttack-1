@@ -5,7 +5,6 @@ using System.Management.Automation.Runspaces;
 using PSPunch.CryptUtil;
 using System.IO;
 using System.Text;
-using System.Reflection;
 using PSPunch.PSPunchProcessing;
 using PSPunch.PSPunchDisplay;
 
