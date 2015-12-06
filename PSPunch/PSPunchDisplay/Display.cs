@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using PSPunch.PSPunchProcessing;
 
+
 namespace PSPunch.PSPunchDisplay
 {
     class Display
     {
-        private static string prompt = "PSPUNCH! #> ";
+        private static string prompt = Strings.prompt;
 
         public static void Output(PunchState punchState)
         {

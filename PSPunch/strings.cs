@@ -7,6 +7,6 @@ namespace PSPunch
 {
     class Strings
     {
-        public string prompt = "PSPUNCH! #> ";
+        public static string prompt = "PSPUNCH! #> ";
     }
 }

@@ -103,7 +103,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Modules\key.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\attackDate.txt" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\BuildDate.txt" />
   </ItemGroup>
