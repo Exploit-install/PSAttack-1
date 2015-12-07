@@ -1,11 +1,13 @@
 _PS>Punch is in a super limited Proof of Concept state right now. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/PSPunch/releases/)_
 
-_A lot of this README is place holder indicating where the project will be at when it's "done". It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/)) is at [here](http://www.psattack.com/tags/psattack/)_
+_It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/)) is at [here](http://www.psattack.com/tags/psattack/)_
 
 _If you have any questions or suggestions for PS>Attack and PSPunch, feel free to reachout on [twitter](https://www.twitter.com/jaredhaight) or via email: jaredhaight `at` prontonmail.com_
 
-## PS>Punch
+## PS>Punch [![Build status](https://ci.appveyor.com/api/projects/status/x8doqg2vv73f131x?svg=true)](https://ci.appveyor.com/project/jaredhaight/pspunch)
+
 An portable console aimed at making pentesting with PowerShell a little easier.
+
 
 #### What is it
 PS>Punch combines some of the best projects in the infosec powershell community into a self contained executable. It's designed to evade antivirus and Incident Response teams.
