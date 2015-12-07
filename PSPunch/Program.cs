@@ -68,7 +68,7 @@ namespace PSPunch
                 buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Punch thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttack \n";
             }
             Console.WriteLine("Welcome to PS>Punch! This is version {0}. \n{1}", Strings.version, buildString);
-
+            Console.WriteLine("This is running in .NET v{0}\n",System.Environment.Version);
             // Display Prompt
             punchState.loopPos = 0;
             punchState.cmdComplete = false;

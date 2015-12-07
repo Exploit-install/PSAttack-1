@@ -65,11 +65,11 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Management.Automation" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PSPunchDisplay\Display.cs" />
@@ -86,7 +86,10 @@
     <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="app.config" />
+    <None Include="PSPunch.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="Modules\invoke-mimikatz.ps1.enc" />
     <EmbeddedResource Include="Modules\invoke-gpppassword.ps1.enc" />
     <EmbeddedResource Include="Modules\invoke-ninjacopy.ps1.enc" />
