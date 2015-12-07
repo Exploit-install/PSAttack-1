@@ -87,9 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="PSPunch.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <EmbeddedResource Include="Modules\invoke-mimikatz.ps1.enc" />
     <EmbeddedResource Include="Modules\invoke-gpppassword.ps1.enc" />
     <EmbeddedResource Include="Modules\invoke-ninjacopy.ps1.enc" />
