@@ -15,16 +15,10 @@ namespace PSPunch
         static PunchState PSInit()
         {
             //Display Loading Message
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(@"
- ___  _____  ___              _    _
-| _ \/ _ \ \| _ \_  _ _ _  __| |_ | |
-|  _/\__ \> >  _/ || | ' \/ _| ' \|_|
-|_|  |___/_/|_|  \_,_|_||_\__|_||_(_)
-
-");
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(Strings.banner);
             Console.WriteLine("PS>Punch is loading...");
+            Console.ForegroundColor = ConsoleColor.White;
 
             //Setup PS Host and runspace
             PunchState punchState = new PunchState();
@@ -57,35 +51,23 @@ namespace PSPunch
             Console.Clear();
 
             // Display alpha warning
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(@"
-############################################################
-#                                                          #
-#    PLEASE NOTE: This is an alpha release of PS>Punch.    #
-# There are plenty of bugs and not a lot of functionality. # 
-#                                                          #
-#         For more info view the release notes at          #
-#   https://www.github.com/jaredhaight/pspunch/releases    #
-#                                                          #
-############################################################
-
-");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(Strings.warning);
 
             // Display Version and build date:
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            string version ="0.1.1-alpha";
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             string buildString;
             string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.attackDate.txt")).ReadToEnd();
             if (attackDate.Length > 12)
             {
-                buildString = "It was custom made by PS>Attack on "+attackDate;
+                buildString = "It was custom made by PS>Attack on " + attackDate + "\n"; 
             }
             else
             {
                 string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.BuildDate.txt")).ReadToEnd();
                 buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Punch thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttack \n";
             }
-            Console.WriteLine("Welcome to PS>Punch! This is version {0}. \n{1}", version, buildString);
+            Console.WriteLine("Welcome to PS>Punch! This is version {0}. \n{1}", Strings.version, buildString);
 
             // Display Prompt
             punchState.loopPos = 0;
