@@ -87,30 +87,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="Modules\invoke-mimikatz.ps1.enc" />
-    <EmbeddedResource Include="Modules\invoke-gpppassword.ps1.enc" />
-    <EmbeddedResource Include="Modules\invoke-ninjacopy.ps1.enc" />
-    <EmbeddedResource Include="Modules\powerup.ps1.enc" />
-    <EmbeddedResource Include="Modules\powerview.ps1.enc" />
-    <EmbeddedResource Include="Modules\add-exfiltration.ps1.enc" />
-    <EmbeddedResource Include="Modules\dns_txt_pwnage.ps1.enc" />
-    <EmbeddedResource Include="Modules\do-exfiltration.ps1.enc" />
-    <EmbeddedResource Include="Modules\get-information.ps1.enc" />
-    <EmbeddedResource Include="Modules\get-wlan-keys.ps1.enc" />
-    <EmbeddedResource Include="Modules\gupt-backdoor.ps1.enc" />
-    <EmbeddedResource Include="Modules\invoke-shellcode.ps1.enc" />
-    <EmbeddedResource Include="Modules\invoke-wmicommand.ps1.enc" />
-    <EmbeddedResource Include="Modules\out-dnstxt.ps1.enc" />
-    <EmbeddedResource Include="Modules\powercat.ps1.enc" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Modules\key.txt" />
+    <EmbeddedResource Include="Modules\19F9942370D070EEC6C16D3F5FB343EC.ps1.enc" />
+    <EmbeddedResource Include="Modules\2038CC5D9A42B96D8584D1398F746E2A.ps1.enc" />
+    <EmbeddedResource Include="Modules\3EC9495951203C8BC412E055858E2508.ps1.enc" />
+    <EmbeddedResource Include="Modules\493449D6CEB155F5D05AB8ABC79F13B1.ps1.enc" />
+    <EmbeddedResource Include="Modules\589BD0502320CDA2F0242FF7D8FDBD61.ps1.enc" />
+    <EmbeddedResource Include="Modules\5B2D34C398C8B3C8084D28AC8EEC6463.ps1.enc" />
+    <EmbeddedResource Include="Modules\858655A84C4B90A81400451BE4AB036A.ps1.enc" />
+    <EmbeddedResource Include="Modules\A3C8B9452BA59877E802E734CB051391.ps1.enc" />
+    <EmbeddedResource Include="Modules\AB1689F566BC8AD4801AE9B915A8F993.ps1.enc" />
+    <EmbeddedResource Include="Modules\BAEDC220902F78795B802299ABA12A86.ps1.enc" />
+    <EmbeddedResource Include="Modules\D0C03C57C7630F8E55E45D70EA6F39DA.ps1.enc" />
+    <EmbeddedResource Include="Modules\D317949B333A40A56636BFA301CBC400.ps1.enc" />
+    <EmbeddedResource Include="Modules\DD835AEF296847F7096608ABBCDDD16D.ps1.enc" />
+    <EmbeddedResource Include="Modules\F287C6BECCB1F257DEF546AD6ACDD9E4.ps1.enc" />
+    <EmbeddedResource Include="Modules\F8FDB3161BC4B78289B65432C9AA2714.ps1.enc" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\attackDate.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\BuildDate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Modules\key.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
