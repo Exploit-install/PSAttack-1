@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Net;
 using System.Collections.Generic;
-namespace PSPunch.CryptUtil
+namespace PSPunch.Utils
 {
-    class FileTools
+    class CryptoUtils
     {
 
         public static MemoryStream DecryptFile(Stream inputStream, string key)

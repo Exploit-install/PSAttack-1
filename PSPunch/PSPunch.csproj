@@ -72,9 +72,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PSPunchDisplay\Display.cs" />
+    <Compile Include="Utils\Display.cs" />
     <Compile Include="PSPunchProcessing\PunchState.cs" />
-    <Compile Include="CryptUtil\FileTools.cs" />
+    <Compile Include="Utils\CryptoUtils.cs" />
     <Compile Include="PSPunchProcessing\Processing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="PSPunchShell\PSPunchHostRawUserInterface.cs" />
     <Compile Include="PSPunchShell\PSPunchHostUserInterface.cs" />
     <Compile Include="Strings.cs" />
+    <Compile Include="Utils\PSPUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

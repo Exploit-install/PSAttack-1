@@ -5,7 +5,7 @@ using System.Text;
 using PSPunch.PSPunchProcessing;
 
 
-namespace PSPunch.PSPunchDisplay
+namespace PSPunch.Utils
 {
     class Display
     {

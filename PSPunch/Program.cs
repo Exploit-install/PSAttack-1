@@ -1,12 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Configuration;
 using System.Reflection;
 using System.Management.Automation.Runspaces;
-using PSPunch.CryptUtil;
-using System.IO;
-using System.Text;
 using PSPunch.PSPunchProcessing;
-using PSPunch.PSPunchDisplay;
+using PSPunch.Utils;
 
 namespace PSPunch
 {
@@ -36,10 +35,9 @@ namespace PSPunch
                 {
                     Console.WriteLine("Decrypting: " + resource.ToString());
                     Stream moduleStream = assembly.GetManifestResourceStream(resource);
-                    ImportModules(punchState, moduleStream);
+                    PSPUtils.ImportModules(punchState, moduleStream);
                 }
             }
-                      
             //Setup PS env
             punchState.cmd = "set-executionpolicy bypass -Scope process -Force";
             Processing.PSExec(punchState);
@@ -51,7 +49,7 @@ namespace PSPunch
             Console.Clear();
 
             // Display alpha warning
-            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(Strings.warning);
 
             // Display Version and build date:
@@ -67,24 +65,13 @@ namespace PSPunch
                 string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.BuildDate.txt")).ReadToEnd();
                 buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Punch thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttack \n";
             }
-            Console.WriteLine("Welcome to PS>Punch! This is version {0}. \n{1}", Strings.version, buildString);
-            Console.WriteLine("This is running in .NET v{0}\n",System.Environment.Version);
+            Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString, System.Environment.Version);
             // Display Prompt
             punchState.loopPos = 0;
             punchState.cmdComplete = false;
             Display.Prompt();
 
             return punchState;
-        }
-
-        static void ImportModules(PunchState punchState, Stream moduleStream)
-        {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Modules.key.txt"));
-            string key = keyReader.ReadToEnd();
-            MemoryStream decMem = FileTools.DecryptFile(moduleStream, key);
-            punchState.cmd = Encoding.Unicode.GetString(decMem.ToArray());
-            Processing.PSExec(punchState);
         }
 
         static void Main(string[] args)

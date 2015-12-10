@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchShell;
-using PSPunch.PSPunchDisplay;
+using PSPunch.Utils;
 
 namespace PSPunch.PSPunchProcessing
 {
