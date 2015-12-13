@@ -20,7 +20,7 @@ namespace PSPunch.Utils
             string key = keyReader.ReadToEnd();
             try
             {
-                MemoryStream decMem = CryptoUtils.DecryptFile(moduleStream, key);
+                MemoryStream decMem = CryptoUtils.DecryptFile(moduleStream);
                 punchState.cmd = Encoding.Unicode.GetString(decMem.ToArray());
                 Processing.PSExec(punchState);
             }

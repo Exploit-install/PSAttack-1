@@ -33,7 +33,9 @@ namespace PSPunch
             {
                 if (resource.Contains(".enc"))
                 {
-                    Console.WriteLine("Decrypting: " + resource.ToString());
+                    string fileName = resource.Replace("PSPunch.Modules.","").Replace(".ps1.enc","");
+                    string decFilename = CryptoUtils.DecryptString(fileName);
+                    Console.WriteLine("Decrypting: " + decFilename);
                     Stream moduleStream = assembly.GetManifestResourceStream(resource);
                     PSPUtils.ImportModules(punchState, moduleStream);
                 }
