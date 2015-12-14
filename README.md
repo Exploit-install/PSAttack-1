@@ -6,8 +6,7 @@ _If you have any questions or suggestions for PS>Attack and PSPunch, feel free t
 
 ## PS>Punch [![Build status](https://ci.appveyor.com/api/projects/status/x8doqg2vv73f131x?svg=true)](https://ci.appveyor.com/project/jaredhaight/pspunch)
 
-An portable console aimed at making pentesting with PowerShell a little easier.
-
+A portable console aimed at making pentesting with PowerShell a little easier.
 
 #### What is it
 PS>Punch combines some of the best projects in the infosec powershell community into a self contained executable. It's designed to evade antivirus and Incident Response teams.
