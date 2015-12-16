@@ -120,7 +120,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         //called when tab and last char is -
-        static PunchState paramAutoComplete(PunchState punchState, string paramSeed)
+        static PunchState paramAutoComplete(PunchState punchState)
         {
             punchState.paramLoop = true;
             if (punchState.autocompleteSeed.Length == 0)
@@ -140,7 +140,7 @@ namespace PSPunch.PSPunchProcessing
                 }
                 try
                 {
-                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
+                    punchState.displayCmd = punchState.displayCmdSeed + "-" + punchState.results[punchState.loopPos].ToString();
                 }
                 catch
                 {
@@ -148,13 +148,17 @@ namespace PSPunch.PSPunchProcessing
                 }
                 return punchState;
             }
+            int lastParam = punchState.displayCmd.LastIndexOf(" -");
+            string paramSeed = punchState.displayCmd.Substring(lastParam).Replace(" -","");
+            int firstSpace = punchState.displayCmd.IndexOf(" ");
+            string paramCmd = punchState.displayCmdSeed.Substring(0, firstSpace);
             punchState.cmd = punchState.autocompleteSeed;
             punchState.inLoop = true;
-            punchState.cmd = "(Get-Command " + punchState.cmd +").Parameters.Keys.Where({$_ -like '"+paramSeed+"*'})";
+            punchState.cmd = "(Get-Command " + paramCmd +").Parameters.Keys.Where({$_ -like '"+paramSeed+"*'})";
             punchState = PSExec(punchState);
             if (punchState.results.Count > 0)
             {
-                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].ToString();
+                punchState.displayCmd = punchState.displayCmdSeed + "-"+punchState.results[punchState.loopPos].ToString();
             }
             return punchState;
         }
@@ -231,8 +235,7 @@ namespace PSPunch.PSPunchProcessing
 
                 if (punchState.autocompleteSeed.Contains(" -"))
                 {
-                    string paramString = "";
-                    return paramAutoComplete(punchState, paramString);
+                    return paramAutoComplete(punchState);
                 }
                 else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\") || punchState.autocompleteSeed.Contains(".\\")) {
                     return pathAutoComplete(punchState);
