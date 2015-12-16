@@ -22,6 +22,7 @@ Offensively, PS>Punch contains commands for Privilege Escalation, Recon and Data
   - Invoke-NinjaCopy
   - Invoke-Shellcode
   - Invoke-WMICommand
+  - VolumeShadowCopyTools
 * [PowerTools](https://github.com/PowerShellEmpire/PowerTools)
   - PowerUp
   - PowerView
@@ -31,7 +32,9 @@ Offensively, PS>Punch contains commands for Privilege Escalation, Recon and Data
   - DNS-TXT-Pwnage
   - Get-Infromation
   - Get-WLAN-Keys
+  - Invoke-PsUACme
 * [Powercat](https://github.com/besimorhino/powercat)
+* [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
 
 #### How to use it
 PS>Punch works best when you generate your own version through [PS>Attack](https://www.github.com/jaredhaight/PSAttack). PS>Attack will handle downloading PS>Punch, updating the modules to the latest versions, encrypting them with a custom key and then compiling the whole thing into an executable.
