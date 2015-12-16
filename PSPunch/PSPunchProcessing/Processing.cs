@@ -43,7 +43,7 @@ namespace PSPunch.PSPunchProcessing
         //called when tab is pressed
         static PunchState cmdAutoComplete(PunchState punchState)
         {
-            if (punchState.displayCmd.Length == 0)
+            if (punchState.autocompleteSeed.Length == 0)
             {
                 return punchState;
             }
@@ -68,7 +68,7 @@ namespace PSPunch.PSPunchProcessing
                 }
                 return punchState;
             }
-            punchState.cmd = punchState.displayCmd;
+            punchState.cmd = punchState.autocompleteSeed;
             punchState.inLoop = true;
             punchState.cmd = "Get-Command " + punchState.cmd + "*";
             punchState = PSExec(punchState);
@@ -110,7 +110,7 @@ namespace PSPunch.PSPunchProcessing
             }
             punchState.cmd = punchState.autocompleteSeed;
             punchState.inLoop = true;
-            punchState.cmd = "Get-ChildItem " + punchState.cmd;
+            punchState.cmd = "Get-ChildItem " + punchState.cmd +"*";
             punchState = PSExec(punchState);
             if (punchState.results.Count > 0)
             {
@@ -123,7 +123,7 @@ namespace PSPunch.PSPunchProcessing
         static PunchState paramAutoComplete(PunchState punchState, string paramSeed)
         {
             punchState.paramLoop = true;
-            if (punchState.paramCmdSeed.Length == 0)
+            if (punchState.autocompleteSeed.Length == 0)
             {
                 return punchState;
             }
@@ -148,7 +148,7 @@ namespace PSPunch.PSPunchProcessing
                 }
                 return punchState;
             }
-            punchState.cmd = punchState.paramCmdSeed;
+            punchState.cmd = punchState.autocompleteSeed;
             punchState.inLoop = true;
             punchState.cmd = "(Get-Command " + punchState.cmd +").Parameters.Keys.Where({$_ -like '"+paramSeed+"*'})";
             punchState = PSExec(punchState);
@@ -234,7 +234,7 @@ namespace PSPunch.PSPunchProcessing
                     string paramString = "";
                     return paramAutoComplete(punchState, paramString);
                 }
-                else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\")) {
+                else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\") || punchState.autocompleteSeed.Contains(".\\")) {
                     return pathAutoComplete(punchState);
                 }
                 else
