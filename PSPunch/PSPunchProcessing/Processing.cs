@@ -40,6 +40,162 @@ namespace PSPunch.PSPunchProcessing
             return punchState;
         }
 
+        //called when tab is pressed
+        static PunchState cmdAutoComplete(PunchState punchState)
+        {
+            if (punchState.displayCmd.Length == 0)
+            {
+                return punchState;
+            }
+            // setup autocomplete loop
+            if (punchState.inLoop)
+            {
+                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
+                {
+                    punchState.loopPos -= 1;
+                }
+                else if (punchState.loopPos < punchState.results.Count)
+                {
+                    punchState.loopPos += 1;
+                }
+                try
+                {
+                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].BaseObject.ToString();
+                }
+                catch
+                {
+
+                }
+                return punchState;
+            }
+            punchState.cmd = punchState.displayCmd;
+            punchState.inLoop = true;
+            punchState.cmd = "Get-Command " + punchState.cmd + "*";
+            punchState = PSExec(punchState);
+            if (punchState.results.Count > 0)
+            {
+                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].BaseObject.ToString();
+            }
+            return punchState;
+        }
+
+        //called when tab is pressed
+        static PunchState pathAutoComplete(PunchState punchState)
+        {
+            punchState.pathLoop = true;
+            if (punchState.autocompleteSeed.Length == 0)
+            {
+                return punchState;
+            }
+            // setup autocomplete loop
+            if (punchState.inLoop)
+            {
+                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
+                {
+                    punchState.loopPos -= 1;
+                }
+                else if (punchState.loopPos < punchState.results.Count)
+                {
+                    punchState.loopPos += 1;
+                }
+                try
+                {
+                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
+                }
+                catch
+                {
+
+                }
+                return punchState;
+            }
+            punchState.cmd = punchState.autocompleteSeed;
+            punchState.inLoop = true;
+            punchState.cmd = "Get-ChildItem " + punchState.cmd;
+            punchState = PSExec(punchState);
+            if (punchState.results.Count > 0)
+            {
+                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
+            }
+            return punchState;
+        }
+
+        //called when tab and last char is -
+        static PunchState paramAutoComplete(PunchState punchState, string paramSeed)
+        {
+            punchState.paramLoop = true;
+            if (punchState.paramCmdSeed.Length == 0)
+            {
+                return punchState;
+            }
+            // setup autocomplete loop
+            if (punchState.inLoop)
+            {
+                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
+                {
+                    punchState.loopPos -= 1;
+                }
+                else if (punchState.loopPos < punchState.results.Count)
+                {
+                    punchState.loopPos += 1;
+                }
+                try
+                {
+                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
+                }
+                catch
+                {
+
+                }
+                return punchState;
+            }
+            punchState.cmd = punchState.paramCmdSeed;
+            punchState.inLoop = true;
+            punchState.cmd = "(Get-Command " + punchState.cmd +").Parameters.Keys.Where({$_ -like '"+paramSeed+"*'})";
+            punchState = PSExec(punchState);
+            if (punchState.results.Count > 0)
+            {
+                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].ToString();
+            }
+            return punchState;
+        }
+
+        // called when up or down is entered
+        static PunchState history(PunchState punchState)
+        {
+            if (punchState.history.Count > 0)
+            {
+                if (!(punchState.inLoop))
+                {
+                    punchState.inLoop = true;
+                    if (punchState.loopPos == 0)
+                    {
+                        punchState.loopPos = punchState.history.Count;
+
+                    }
+                }
+                if (punchState.keyInfo.Key == ConsoleKey.UpArrow && punchState.loopPos > 0)
+                {
+                    punchState.loopPos -= 1;
+                    punchState.displayCmd = punchState.history[punchState.loopPos];
+
+                }
+                if (punchState.keyInfo.Key == ConsoleKey.DownArrow)
+                {
+
+                    if ((punchState.loopPos + 1) > (punchState.history.Count - 1))
+                    {
+                        punchState.displayCmd = "";
+                    }
+                    else
+                    {
+                        punchState.loopPos += 1;
+                        punchState.displayCmd = punchState.history[punchState.loopPos];
+                    }
+                }
+            }
+            return punchState;
+        }
+
         // This called everytime a key is pressed.
         public static PunchState CommandProcessor(PunchState punchState)
         {
@@ -54,75 +210,37 @@ namespace PSPunch.PSPunchProcessing
             }
             else if (punchState.keyInfo.Key == ConsoleKey.UpArrow || punchState.keyInfo.Key == ConsoleKey.DownArrow)
             {
-                if (punchState.history.Count > 0)
-                {
-                    if (!(punchState.inLoop))
-                    {
-                        punchState.inLoop = true;
-                        if (punchState.loopPos == 0)
-                        {
-                            punchState.loopPos = punchState.history.Count;
-
-                        }
-                    }
-                    if (punchState.keyInfo.Key == ConsoleKey.UpArrow && punchState.loopPos > 0)
-                    {
-                        punchState.loopPos -= 1;
-                        punchState.displayCmd = punchState.history[punchState.loopPos];
-                        
-                    }
-                    if (punchState.keyInfo.Key == ConsoleKey.DownArrow)
-                    {
-                        
-                        if ((punchState.loopPos +1) > (punchState.history.Count -1))
-                        {
-                            punchState.displayCmd = "";
-                        }
-                        else
-                        {
-                            punchState.loopPos += 1;
-                            punchState.displayCmd = punchState.history[punchState.loopPos];
-                        }
-                    }
-                }
-                return punchState;
+                return history(punchState);
             }
             else if (punchState.keyInfo.Key == ConsoleKey.Tab)
             {
-                if (punchState.displayCmd.Length == 0)
+                if (punchState.autocompleteSeed == null)
                 {
-                    return punchState;
+                    int lastSpace = punchState.displayCmd.LastIndexOf(" ");
+                    if (lastSpace > 0)
+                    {
+                        punchState.autocompleteSeed = punchState.displayCmd.Substring(lastSpace);
+                        punchState.displayCmdSeed = punchState.displayCmd.Substring(0, lastSpace+1);
+                    }
+                    else
+                    {
+                        punchState.autocompleteSeed = punchState.displayCmd;
+                        punchState.displayCmdSeed = "";
+                    }
                 }
-                // setup autocomplete loop
-                if (punchState.inLoop)
-                {
-                    if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
-                    {
-                        punchState.loopPos -= 1;
-                    }
-                    else if (punchState.loopPos < punchState.results.Count)
-                    {
-                        punchState.loopPos += 1;
-                    }
-                    try
-                    {
-                        punchState.displayCmd = punchState.results[punchState.loopPos].BaseObject.ToString();
-                    }
-                    catch
-                    {
 
-                    }
-                    return punchState;
-                }
-                punchState.cmd = punchState.displayCmd;
-                punchState.inLoop = true;
-                punchState.cmd = "Get-Command " + punchState.cmd + "*";
-                punchState = PSExec(punchState);
-                if (punchState.results.Count > 0)
+                if (punchState.autocompleteSeed.Contains(" -"))
                 {
-                    punchState.displayCmd = punchState.results[punchState.loopPos].BaseObject.ToString();
+                    string paramString = "";
+                    return paramAutoComplete(punchState, paramString);
                 }
-                return punchState;
+                else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\")) {
+                    return pathAutoComplete(punchState);
+                }
+                else
+                {
+                    return cmdAutoComplete(punchState);
+                }
             }
             else if (punchState.keyInfo.Key == ConsoleKey.Enter)
             {

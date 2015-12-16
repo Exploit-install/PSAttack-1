@@ -17,14 +17,26 @@ namespace PSPunch.PSPunchProcessing
         // contents of displayCmd are what are shown on screen as the command
         public string displayCmd { get; set; }
         
+        // string to run autocomplete against
+        public string autocompleteSeed { get; set; }
+
+        // string to store displayCmd for autocomplete concatenation
+        public string displayCmdSeed { get; set; }
+
+        // string to store the command that we're autocompleting params for
+        public string paramCmdSeed { get; set; }
+
         // key that was last pressed
         public ConsoleKeyInfo keyInfo { get; set; }
         
         // we set a loopPos for when we're in a tab-complete loop
         public int loopPos { get; set; }
         
-        // are we in a loop
+        // loop states
         public bool inLoop { get; set; }
+        public bool pathLoop { get; set; }
+        public bool cmdLoop { get; set; }
+        public bool paramLoop { get; set; }
         public Runspace runspace { get; set; }
         public PSPunchHost host { get; set; }
         
@@ -42,7 +54,12 @@ namespace PSPunch.PSPunchProcessing
         public void ClearLoop()
         {
             this.inLoop = false;
+            this.cmdLoop = false;
+            this.pathLoop = false;
+            this.paramLoop = false;
             this.results = null;
+            this.autocompleteSeed = null;
+            this.displayCmdSeed = null;
             this.loopPos = 0;
         }
 
