@@ -15,7 +15,10 @@ namespace PSPunch.Utils
         {
             if (punchState.cmdComplete)
             {
+                ConsoleColor origColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine("\n" + punchState.output);
+                Console.ForegroundColor = origColor;
                 Prompt();
             }
             int consoleTopPos = Console.CursorTop;
@@ -29,7 +32,7 @@ namespace PSPunch.Utils
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(prompt);
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Green;
         }
     }
 }

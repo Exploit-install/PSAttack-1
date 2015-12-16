@@ -158,7 +158,7 @@ namespace PSPunch.PSPunchProcessing
             punchState = PSExec(punchState);
             if (punchState.results.Count > 0)
             {
-                punchState.displayCmd = punchState.displayCmdSeed + "-"+punchState.results[punchState.loopPos].ToString();
+                punchState.displayCmd = punchState.displayCmdSeed + "-" + punchState.results[punchState.loopPos].ToString();
             }
             return punchState;
         }
@@ -223,8 +223,24 @@ namespace PSPunch.PSPunchProcessing
                     int lastSpace = punchState.displayCmd.LastIndexOf(" ");
                     if (lastSpace > 0)
                     {
+                        // get the command that we're autocompleting for by looking for the last space and pipe
+                        // anything after the last space we're going to try and autocomplete. Anything between the
+                        // last pipe and last space we assume is a command. 
+                        int lastPipe = punchState.displayCmd.Substring(0, lastSpace + 1).LastIndexOf("|");
                         punchState.autocompleteSeed = punchState.displayCmd.Substring(lastSpace);
-                        punchState.displayCmdSeed = punchState.displayCmd.Substring(0, lastSpace+1);
+                        if (lastSpace - lastPipe > 2)
+                        {
+                            punchState.displayCmdSeed = punchState.displayCmd.Substring(lastPipe+1, (lastSpace-lastPipe));
+                        }
+                        else
+                        {
+                            punchState.displayCmdSeed = punchState.displayCmd.Substring(0, lastSpace);
+                        }
+                        // trim leading space from command in the event of "cmd | cmd"
+                        if (punchState.displayCmdSeed.IndexOf(" ").Equals(0))
+                        {
+                            punchState.displayCmdSeed = punchState.displayCmd.Substring(1, lastSpace);
+                        }
                     }
                     else
                     {
