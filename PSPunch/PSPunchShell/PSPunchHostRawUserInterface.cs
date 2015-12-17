@@ -13,7 +13,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return System.ConsoleColor.Blue;
+                return System.ConsoleColor.DarkBlue;
             }
             set
             {
@@ -66,7 +66,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return ConsoleColor.Black;
+                return ConsoleColor.Gray;
             }
             set
             {

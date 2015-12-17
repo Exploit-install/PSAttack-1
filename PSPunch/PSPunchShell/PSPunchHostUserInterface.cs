@@ -13,20 +13,6 @@ namespace PSPunch.PSPunchShell
 {
     class PSPunchHostUserInterface : PSHostUserInterface
     {
-        private StringBuilder _sb;
-
-        public PSPunchHostUserInterface()
-        {
-            _sb = new StringBuilder();
-        }
-
-        private StringBuilder writeOut(string output)
-        {
-            _sb = new StringBuilder();
-            _sb.AppendLine(output);
-            return _sb;
-        }
-
         private PSPunchRawUserInterface PSPunchRawUI = new PSPunchRawUserInterface();
         public override PSHostRawUserInterface RawUI
         {
@@ -79,54 +65,54 @@ namespace PSPunch.PSPunchShell
             return rtn;
         }
 
-        public override void Write(ConsoleColor foregroundColor, ConsoleColor backgroundColor, string value)
+        public override void Write(ConsoleColor foregroundColor, ConsoleColor backgroundColor, string message)
         {
-            _sb.Append(value);
+            Console.ForegroundColor = PSColors.normalText;
+            Console.WriteLine(message);
         }
 
-        public override void Write(string value)
+        public override void Write(string message)
         {
-            _sb.Append(value);
+            Console.ForegroundColor = PSColors.normalText;
+            Console.WriteLine(message);
         }
 
         public override void WriteDebugLine(string message)
         {
-            _sb.AppendLine("DEBUG: " + message);
+            Console.ForegroundColor = PSColors.debugText;
+            Console.WriteLine("DEBUG: {0}", message);
+            Console.ForegroundColor = PSColors.normalText;
         }
 
-        public override void WriteErrorLine(string value)
+        public override void WriteErrorLine(string message)
         {
-            _sb.AppendLine("ERROR: " + value);
+            Console.ForegroundColor = PSColors.errorText;
+            Console.WriteLine("ERROR: {0}", message);
+            Console.ForegroundColor = PSColors.normalText;
         }
 
-        public override void WriteLine(string value)
+        public override void WriteLine(string message)
         {
-            _sb.AppendLine(value);
+            Console.ForegroundColor = PSColors.normalText;
+            Console.WriteLine(message);
         }
 
         public override void WriteVerboseLine(string message)
         {
-            _sb.AppendLine("VERBOSE: " + message);
+            Console.ForegroundColor = PSColors.normalText;
+            Console.WriteLine(message);
         }
 
         public override void WriteWarningLine(string message)
         {
-            _sb.AppendLine("WARNING: " + message);
+            Console.ForegroundColor = PSColors.warningText;
+            Console.WriteLine("WARNING: {0}", message);
+            Console.ForegroundColor = PSColors.normalText;
         }
 
         public override void WriteProgress(long sourceId, ProgressRecord record)
         {
             return;
-        }
-
-        public string Output
-        {
-            get
-            {
-                string outputStr = _sb.ToString();
-                _sb.Length = 0;
-                return outputStr;
-            }
         }
 
         public override int PromptForChoice(string caption, string message, Collection<ChoiceDescription> choices, int defaultChoice)

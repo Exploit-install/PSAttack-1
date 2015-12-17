@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PSPunch.PSPunchShell;
 using PSPunch.PSPunchProcessing;
 
 
@@ -15,10 +16,6 @@ namespace PSPunch.Utils
         {
             if (punchState.cmdComplete)
             {
-                ConsoleColor origColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("\n" + punchState.output);
-                Console.ForegroundColor = origColor;
                 Prompt();
             }
             int consoleTopPos = Console.CursorTop;
@@ -30,9 +27,9 @@ namespace PSPunch.Utils
 
         public static void Prompt()
         {
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = PSColors.prompt;
             Console.Write(prompt);
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = PSColors.cmdText;
         }
     }
 }

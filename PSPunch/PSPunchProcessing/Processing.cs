@@ -36,7 +36,6 @@ namespace PSPunch.PSPunchProcessing
             {
                 punchState.cmdComplete = true;
             }
-            punchState.output = ((PSPunchHostUserInterface)punchState.host.UI).Output.ToString();
             return punchState;
         }
 
@@ -216,6 +215,30 @@ namespace PSPunch.PSPunchProcessing
             {
                 return history(punchState);
             }
+            else if (punchState.keyInfo.Key == ConsoleKey.Enter)
+            {
+                Console.WriteLine("\n");
+                punchState.ClearLoop();
+                punchState.cmd = punchState.displayCmd;
+                punchState.history.Add(punchState.cmd);
+                if (punchState.cmd == "exit")
+                {
+                    System.Environment.Exit(0);
+                }
+                else if (punchState.cmd == "clear")
+                {
+                    Console.Clear();
+                    punchState.displayCmd = "";
+                    Display.Prompt();
+
+                }
+                else if (punchState.cmd != null)
+                {
+                    punchState = Processing.PSExec(punchState);
+                    Display.Output(punchState);
+                }
+                punchState.ClearIO();
+            }
             else if (punchState.keyInfo.Key == ConsoleKey.Tab)
             {
                 if (punchState.autocompleteSeed == null)
@@ -260,29 +283,6 @@ namespace PSPunch.PSPunchProcessing
                 {
                     return cmdAutoComplete(punchState);
                 }
-            }
-            else if (punchState.keyInfo.Key == ConsoleKey.Enter)
-            {
-                punchState.ClearLoop();
-                punchState.cmd = punchState.displayCmd;
-                punchState.history.Add(punchState.cmd);
-                if (punchState.cmd == "exit")
-                {
-                    System.Environment.Exit(0);
-                }
-                else if (punchState.cmd == "clear")
-                {
-                    Console.Clear();
-                    punchState.displayCmd = "";
-                    Display.Prompt();
-
-                }
-                else if (punchState.cmd != null)
-                {
-                    punchState = Processing.PSExec(punchState);
-                    Display.Output(punchState);
-                }
-                punchState.ClearIO();
             }
             else
             {
