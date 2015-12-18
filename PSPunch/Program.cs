@@ -71,13 +71,14 @@ namespace PSPunch
             // Display Prompt
             punchState.loopPos = 0;
             punchState.cmdComplete = false;
-            Display.Prompt();
+            Display.printPrompt(punchState);
 
             return punchState;
         }
 
         static void Main(string[] args)
         {
+            Console.Title = Strings.windowTitle;
             PunchState punchState = PSInit();
             while (true)
             {

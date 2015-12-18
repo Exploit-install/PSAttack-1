@@ -229,7 +229,7 @@ namespace PSPunch.PSPunchProcessing
                 {
                     Console.Clear();
                     punchState.displayCmd = "";
-                    Display.Prompt();
+                    Display.printPrompt(punchState);
 
                 }
                 else if (punchState.cmd != null)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,20 @@ namespace PSPunch.Utils
 {
     class Display
     {
-        private static string prompt = Strings.prompt;
+        public static string createPrompt(PunchState punchState)
+        {
+            string prompt = punchState.runspace.SessionStateProxy.Path.CurrentLocation + " #> ";
+            return prompt;
+        }
+        
 
         public static void Output(PunchState punchState)
         {
             if (punchState.cmdComplete)
             {
-                Prompt();
+                printPrompt(punchState);
             }
+            string prompt = createPrompt(punchState);
             int consoleTopPos = Console.CursorTop;
             Console.SetCursorPosition(prompt.Length, consoleTopPos);
             Console.Write(new string(' ', Console.WindowWidth));
@@ -25,8 +32,9 @@ namespace PSPunch.Utils
             Console.Write(punchState.displayCmd);
         }
 
-        public static void Prompt()
+        public static void printPrompt(PunchState punchState)
         {
+            string prompt = createPrompt(punchState);
             Console.ForegroundColor = PSColors.prompt;
             Console.Write(prompt);
             Console.ForegroundColor = PSColors.cmdText;
