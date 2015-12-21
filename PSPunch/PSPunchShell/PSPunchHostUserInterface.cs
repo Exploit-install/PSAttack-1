@@ -117,17 +117,79 @@ namespace PSPunch.PSPunchShell
 
         public override int PromptForChoice(string caption, string message, Collection<ChoiceDescription> choices, int defaultChoice)
         {
-            throw new NotImplementedException();
+            Console.ForegroundColor = PSColors.normalText;
+            Console.WriteLine(caption);
+            Console.WriteLine(message);
+            int choiceInt = defaultChoice;
+            foreach (ChoiceDescription choice in choices)
+            {
+                Console.ForegroundColor = PSColors.normalText;
+                if (choices.IndexOf(choice) == defaultChoice)
+                {
+                    Console.ForegroundColor = PSColors.warningText;
+                }
+                Console.WriteLine("[{0}] {1} ", choices.IndexOf(choice), choice.Label.ToString().Replace("&",""));
+            }
+            Console.WriteLine("Default is: {0}", choices[defaultChoice].Label.ToString().Replace("&",""));
+            Console.Write("\nEnter your choice: ");
+            string choiceStr = Console.ReadLine();
+            choiceInt = Int32.Parse(choiceStr);
+            return choiceInt;
+
         }
 
         public override PSCredential PromptForCredential(string caption, string message, string userName, string targetName)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(caption);
+            Console.WriteLine(message);
+            Console.ForegroundColor = PSColors.warningText;
+            Console.WriteLine(@"
+This is a basic prompt to get credentials required 
+for this cmdlet. A warning, as you type your password
+it will be displayed in plain text.
+
+This will be fixed in an upcoming version of PS>Punch
+by using a proper UI prompt for creds.
+");
+            Console.ForegroundColor = PSColors.normalText;
+            Console.Write("Enter Username (domain\\user): ");
+            userName = Console.ReadLine();
+            Console.Write("Enter Pass: ");
+            string passwd = Console.ReadLine();
+            SecureString secPasswd = new SecureString();
+            foreach (char c in passwd)
+            {
+                secPasswd.AppendChar(c);
+            }
+            secPasswd.MakeReadOnly();
+            return new PSCredential(userName, secPasswd);
         }
 
         public override PSCredential PromptForCredential(string caption, string message, string userName, string targetName, PSCredentialTypes allowedCredentialTypes, PSCredentialUIOptions options)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(caption);
+            Console.WriteLine(message);
+            Console.ForegroundColor = PSColors.warningText;
+            Console.WriteLine(@"
+This is a basic prompt to get credentials required 
+for this cmdlet. A warning, as you type your password
+it will be displayed in plain text.
+
+This will be fixed in an upcoming version of PS>Punch
+by using a proper UI prompt for creds.
+");
+            Console.ForegroundColor = PSColors.normalText;
+            Console.Write("Enter Username (domain\\user): ");
+            userName = Console.ReadLine();
+            Console.Write("Enter Pass: ");
+            string passwd = Console.ReadLine();
+            SecureString secPasswd = new SecureString();
+            foreach (char c in passwd)
+            {
+                secPasswd.AppendChar(c);
+            }
+            secPasswd.MakeReadOnly();
+            return new PSCredential(userName, secPasswd);
         }
 
         public override string ReadLine()
