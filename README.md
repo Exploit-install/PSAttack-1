@@ -18,7 +18,7 @@ Offensively, PS>Punch contains commands for Privilege Escalation, Recon and Data
 
 * [Powersploit](https://github.com/PowerShellMafia/PowerSploit)
   - Invoke-Mimikatz
-  - Invoke-GPPPassword
+  - Get-GPPPassword
   - Invoke-NinjaCopy
   - Invoke-Shellcode
   - Invoke-WMICommand
