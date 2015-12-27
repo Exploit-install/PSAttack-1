@@ -162,7 +162,7 @@ namespace PSPunch.PSPunchProcessing
             string paramCmd = punchState.displayCmdSeed.Substring(0, firstSpace);
             punchState.cmd = punchState.autocompleteSeed;
             punchState.inLoop = true;
-            punchState.cmd = "(Get-Command " + paramCmd +").Parameters.Keys.Where({$_ -like '"+paramSeed+"*'})";
+            punchState.cmd = "(Get-Command " + paramCmd +").Parameters.Keys | Where{$_ -like '"+paramSeed+"*'}";
             punchState = PSExec(punchState);
             if (punchState.results.Count > 0)
             {
