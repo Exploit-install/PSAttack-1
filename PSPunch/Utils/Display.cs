@@ -24,11 +24,18 @@ namespace PSPunch.Utils
             {
                 printPrompt(punchState);
             }
+            int currentCusorPos = Console.CursorTop;
             string prompt = createPrompt(punchState);
-            int consoleTopPos = Console.CursorTop;
-            Console.SetCursorPosition(prompt.Length, consoleTopPos);
+            Console.SetCursorPosition(prompt.Length, punchState.promptPos);
             Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(prompt.Length, consoleTopPos);
+            int cursorDiff = currentCusorPos - punchState.promptPos;
+            while (cursorDiff > 0)
+            {
+                Console.SetCursorPosition(0, punchState.promptPos + cursorDiff);
+                Console.Write(new string(' ', Console.WindowWidth));
+                cursorDiff -= 1;
+            }
+            Console.SetCursorPosition(prompt.Length, punchState.promptPos);
             Console.Write(punchState.displayCmd);
         }
 
@@ -40,6 +47,7 @@ namespace PSPunch.Utils
 
         public static void printPrompt(PunchState punchState)
         {
+            punchState.promptPos = Console.CursorTop;
             string prompt = createPrompt(punchState);
             Console.ForegroundColor = PSColors.prompt;
             Console.Write(prompt);

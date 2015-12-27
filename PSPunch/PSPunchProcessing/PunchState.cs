@@ -31,6 +31,9 @@ namespace PSPunch.PSPunchProcessing
         
         // we set a loopPos for when we're in a tab-complete loop
         public int loopPos { get; set; }
+
+        // The vertical position of the last prompt printed. Used so we know where to start re-writing commands
+        public int promptPos { get; set; }
         
         // loop states
         public bool inLoop { get; set; }
