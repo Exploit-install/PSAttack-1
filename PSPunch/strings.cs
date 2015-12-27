@@ -7,7 +7,7 @@ namespace PSPunch
 {
     class Strings
     {
-        public static string version = "0.1.8-alpha";
+        public static string version = "0.1.9-alpha";
         public static string windowTitle = "PSPunch!!";
         public static string banner = @"
  ___  _____  ___              _    _
