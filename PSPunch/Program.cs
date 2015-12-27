@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchProcessing;
 using PSPunch.Utils;
+using PSPunch.PSPunchShell;
 
 namespace PSPunch
 {
@@ -14,10 +15,9 @@ namespace PSPunch
         static PunchState PSInit()
         {
             //Display Loading Message
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = PSColors.logoText;
             Console.WriteLine(Strings.banner);
             Console.WriteLine("PS>Punch is loading...");
-            Console.ForegroundColor = ConsoleColor.White;
 
             //Setup PS Host and runspace
             PunchState punchState = new PunchState();
@@ -35,6 +35,7 @@ namespace PSPunch
                 {
                     string fileName = resource.Replace("PSPunch.Modules.","").Replace(".ps1.enc","");
                     string decFilename = CryptoUtils.DecryptString(fileName);
+                    Console.ForegroundColor = PSColors.loadingText;
                     Console.WriteLine("Decrypting: " + decFilename);
                     Stream moduleStream = assembly.GetManifestResourceStream(resource);
                     PSPUtils.ImportModules(punchState, moduleStream);
@@ -47,15 +48,15 @@ namespace PSPunch
             punchState = Processing.PSExec(punchState);
 
             //Setup Console
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = PSColors.background;
             Console.Clear();
 
             // Display alpha warning
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = PSColors.errorText;
             Console.WriteLine(Strings.warning);
 
             // Display Version and build date:
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = PSColors.introText;
             string buildString;
             string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.attackDate.txt")).ReadToEnd();
             if (attackDate.Length > 12)

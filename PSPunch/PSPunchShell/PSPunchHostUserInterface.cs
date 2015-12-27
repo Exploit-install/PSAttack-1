@@ -67,13 +67,13 @@ namespace PSPunch.PSPunchShell
 
         public override void Write(ConsoleColor foregroundColor, ConsoleColor backgroundColor, string message)
         {
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.WriteLine(message);
         }
 
         public override void Write(string message)
         {
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.WriteLine(message);
         }
 
@@ -81,25 +81,25 @@ namespace PSPunch.PSPunchShell
         {
             Console.ForegroundColor = PSColors.debugText;
             Console.WriteLine("DEBUG: {0}", message);
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
         }
 
         public override void WriteErrorLine(string message)
         {
             Console.ForegroundColor = PSColors.errorText;
             Console.WriteLine("ERROR: {0}", message);
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
         }
 
         public override void WriteLine(string message)
         {
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.WriteLine(message);
         }
 
         public override void WriteVerboseLine(string message)
         {
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.WriteLine(message);
         }
 
@@ -107,7 +107,7 @@ namespace PSPunch.PSPunchShell
         {
             Console.ForegroundColor = PSColors.warningText;
             Console.WriteLine("WARNING: {0}", message);
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
         }
 
         public override void WriteProgress(long sourceId, ProgressRecord record)
@@ -117,13 +117,13 @@ namespace PSPunch.PSPunchShell
 
         public override int PromptForChoice(string caption, string message, Collection<ChoiceDescription> choices, int defaultChoice)
         {
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.WriteLine(caption);
             Console.WriteLine(message);
             int choiceInt = defaultChoice;
             foreach (ChoiceDescription choice in choices)
             {
-                Console.ForegroundColor = PSColors.normalText;
+                Console.ForegroundColor = PSColors.outputText;
                 if (choices.IndexOf(choice) == defaultChoice)
                 {
                     Console.ForegroundColor = PSColors.warningText;
@@ -151,7 +151,7 @@ it will be displayed in plain text.
 This will be fixed in an upcoming version of PS>Punch
 by using a proper UI prompt for creds.
 ");
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.Write("Enter Username (domain\\user): ");
             userName = Console.ReadLine();
             Console.Write("Enter Pass: ");
@@ -178,7 +178,7 @@ it will be displayed in plain text.
 This will be fixed in an upcoming version of PS>Punch
 by using a proper UI prompt for creds.
 ");
-            Console.ForegroundColor = PSColors.normalText;
+            Console.ForegroundColor = PSColors.outputText;
             Console.Write("Enter Username (domain\\user): ");
             userName = Console.ReadLine();
             Console.Write("Enter Pass: ");
