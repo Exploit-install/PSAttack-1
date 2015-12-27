@@ -2,6 +2,8 @@ _PS>Punch is in a super limited Proof of Concept state right now. You can see wh
 
 _It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/PSAttack)) is at [here](http://www.psattack.com/tags/psattack/)_
 
+_You can find a list of commands that have been tested [here](https://docs.google.com/spreadsheets/d/10Axl5VE08FJGrAh0NjQ_JEskxDfRvHIgUANdnTH3z3Y/edit?usp=sharing)_
+
 _If you have any questions or suggestions for PS>Attack and PSPunch, feel free to reachout on [twitter](https://www.twitter.com/jaredhaight) or via email: jaredhaight `at` prontonmail.com_
 
 ## PS>Punch [![Build status](https://ci.appveyor.com/api/projects/status/x8doqg2vv73f131x?svg=true)](https://ci.appveyor.com/project/jaredhaight/pspunch)
@@ -14,7 +16,7 @@ PS>Punch combines some of the best projects in the infosec powershell community 
 1. It doesn't rely on powershell.exe. Instead it calls powershell directly through the dotNet framework.
 2. The modules that are bundled with the exe are encrypted. When PS>Punch starts, they are decrypted into memory. The unencrypted payloads never touch disk, making it difficult for most antivirus engines to catch them.
 
-Offensively, PS>Punch contains commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
+Offensively, PS>Punch contains commands over 100 commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
 
 * [Powersploit](https://github.com/PowerShellMafia/PowerSploit)
   - Invoke-Mimikatz
