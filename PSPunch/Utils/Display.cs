@@ -32,12 +32,18 @@ namespace PSPunch.Utils
             Console.Write(punchState.displayCmd);
         }
 
+        public static void Exception(PunchState punchState, string errorMsg)
+        {
+            Console.ForegroundColor = PSColors.errorText;
+            Console.WriteLine("ERROR: {0}\n", errorMsg);
+        }
+
         public static void printPrompt(PunchState punchState)
         {
             string prompt = createPrompt(punchState);
             Console.ForegroundColor = PSColors.prompt;
             Console.Write(prompt);
-            Console.ForegroundColor = PSColors.cmdText;
+            Console.ForegroundColor = PSColors.inputText;
         }
     }
 }

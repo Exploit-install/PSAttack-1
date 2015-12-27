@@ -27,7 +27,16 @@ namespace PSPunch.PSPunchProcessing
                 {
                     pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output); pipeline.Commands.Add("out-default");
                 }
-                punchState.results = pipeline.Invoke();
+                try
+                {
+                    punchState.results = pipeline.Invoke();
+                }
+                catch (Exception e)
+                {
+                    punchState.results = null;
+                    Display.Exception(punchState, e.Message);
+                }
+
                 pipeline.Dispose();
             }
             //Clear out command so it doesn't get echo'd out to console again.
