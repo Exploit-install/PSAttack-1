@@ -14,6 +14,46 @@ namespace PSPunch.PSPunchShell
     class PSPunchHostUserInterface : PSHostUserInterface
     {
         private PSPunchRawUserInterface PSPunchRawUI = new PSPunchRawUserInterface();
+
+        // Function used for PromptForCredential
+        private PSCredential GetCreds(string caption, string message)
+        {
+            Console.WriteLine(caption);
+            Console.WriteLine(message);
+            Console.Write("Enter Username (domain\\user): ");
+            string userName = Console.ReadLine();
+            Console.Write("Enter Pass: ");
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            string password = "";
+            while (info.Key != ConsoleKey.Enter)
+            {
+                if (info.Key != ConsoleKey.Backspace)
+                {
+                    Console.Write("*");
+                    password += info.KeyChar;
+                }
+                else if (info.Key == ConsoleKey.Backspace)
+                {
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        password = password.Substring(0, password.Length - 1);
+                        int pos = Console.CursorLeft;
+                        Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                    }
+                }
+                info = Console.ReadKey(true);
+            }
+
+            SecureString secPasswd = new SecureString();
+            foreach (char c in password)
+            {
+                secPasswd.AppendChar(c);
+            }
+            secPasswd.MakeReadOnly();
+            return new PSCredential(userName, secPasswd);
+        }
         public override PSHostRawUserInterface RawUI
         {
             get
@@ -140,56 +180,12 @@ namespace PSPunch.PSPunchShell
 
         public override PSCredential PromptForCredential(string caption, string message, string userName, string targetName)
         {
-            Console.WriteLine(caption);
-            Console.WriteLine(message);
-            Console.ForegroundColor = PSColors.warningText;
-            Console.WriteLine(@"
-This is a basic prompt to get credentials required 
-for this cmdlet. A warning, as you type your password
-it will be displayed in plain text.
-
-This will be fixed in an upcoming version of PS>Punch
-by using a proper UI prompt for creds.
-");
-            Console.ForegroundColor = PSColors.outputText;
-            Console.Write("Enter Username (domain\\user): ");
-            userName = Console.ReadLine();
-            Console.Write("Enter Pass: ");
-            string passwd = Console.ReadLine();
-            SecureString secPasswd = new SecureString();
-            foreach (char c in passwd)
-            {
-                secPasswd.AppendChar(c);
-            }
-            secPasswd.MakeReadOnly();
-            return new PSCredential(userName, secPasswd);
+            return GetCreds(caption, message);
         }
 
         public override PSCredential PromptForCredential(string caption, string message, string userName, string targetName, PSCredentialTypes allowedCredentialTypes, PSCredentialUIOptions options)
         {
-            Console.WriteLine(caption);
-            Console.WriteLine(message);
-            Console.ForegroundColor = PSColors.warningText;
-            Console.WriteLine(@"
-This is a basic prompt to get credentials required 
-for this cmdlet. A warning, as you type your password
-it will be displayed in plain text.
-
-This will be fixed in an upcoming version of PS>Punch
-by using a proper UI prompt for creds.
-");
-            Console.ForegroundColor = PSColors.outputText;
-            Console.Write("Enter Username (domain\\user): ");
-            userName = Console.ReadLine();
-            Console.Write("Enter Pass: ");
-            string passwd = Console.ReadLine();
-            SecureString secPasswd = new SecureString();
-            foreach (char c in passwd)
-            {
-                secPasswd.AppendChar(c);
-            }
-            secPasswd.MakeReadOnly();
-            return new PSCredential(userName, secPasswd);
+            return GetCreds(caption, message);
         }
 
         public override string ReadLine()
