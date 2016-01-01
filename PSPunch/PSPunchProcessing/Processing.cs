@@ -53,7 +53,7 @@ namespace PSPunch.PSPunchProcessing
         {
             if (punchState.history.Count > 0)
             {
-                if (punchState.loopType != null)
+                if (punchState.loopType == null)
                 {
                     punchState.loopType = "history";
                     if (punchState.loopPos == 0)
