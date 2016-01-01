@@ -1,4 +1,4 @@
-_PS>Punch is in a super limited Proof of Concept state right now. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/PSPunch/releases/)_
+_PS>Punch is available as an alpha. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/PSPunch/releases/)_
 
 _It's under heavy, active development and should be taking shape rapidly, with a "1.0" release planned early 2016. I'm writing an ongoing series of articles about where this project (and it's parent, [PS>Attack](https://github.com/jaredhaight/PSAttack)) is at [here](http://www.psattack.com/tags/psattack/)_
 
