@@ -12,80 +12,7 @@ namespace PSPunch.PSPunchProcessing
 {
     class Processing
     {
-        public static PunchState PSExec(PunchState punchState)
-        {
-            using (Pipeline pipeline = punchState.runspace.CreatePipeline())
-            {
-                pipeline.Commands.AddScript(punchState.cmd);
-                // If we're in an auto-complete loop, we want the PSObjects, not the string from the output of the command
-                // TODO: clean this up
-                if (punchState.loopType != null)
-                {
-                    pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
-                }
-                else
-                {
-                    pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output); pipeline.Commands.Add("out-default");
-                }
-                try
-                {
-                    punchState.results = pipeline.Invoke();
-                }
-                catch (Exception e)
-                {
-                    punchState.results = null;
-                    Display.Exception(punchState, e.Message);
-                }
-
-                pipeline.Dispose();
-            }
-            //Clear out command so it doesn't get echo'd out to console again.
-            punchState.ClearIO();
-            if (punchState.loopType == null)
-            {
-                punchState.cmdComplete = true;
-            }
-            return punchState;
-        }
-
-        // called when up or down is entered
-        static PunchState history(PunchState punchState)
-        {
-            if (punchState.history.Count > 0)
-            {
-                if (punchState.loopType == null)
-                {
-                    punchState.loopType = "history";
-                    if (punchState.loopPos == 0)
-                    {
-                        punchState.loopPos = punchState.history.Count;
-
-                    }
-                }
-                if (punchState.keyInfo.Key == ConsoleKey.UpArrow && punchState.loopPos > 0)
-                {
-                    punchState.loopPos -= 1;
-                    punchState.displayCmd = punchState.history[punchState.loopPos];
-
-                }
-                if (punchState.keyInfo.Key == ConsoleKey.DownArrow)
-                {
-
-                    if ((punchState.loopPos + 1) > (punchState.history.Count - 1))
-                    {
-                        punchState.displayCmd = "";
-                    }
-                    else
-                    {
-                        punchState.loopPos += 1;
-                        punchState.displayCmd = punchState.history[punchState.loopPos];
-                    }
-                }
-            }
-            return punchState;
-        }
-
-        // This called everytime a key is pressed.
+        // This is called everytime a key is pressed.
         public static PunchState CommandProcessor(PunchState punchState)
         {
             punchState.output = null;
@@ -136,5 +63,80 @@ namespace PSPunch.PSPunchProcessing
             }
             return punchState;
         }
+
+        // called when up or down is entered
+        static PunchState history(PunchState punchState)
+        {
+            if (punchState.history.Count > 0)
+            {
+                if (punchState.loopType == null)
+                {
+                    punchState.loopType = "history";
+                    if (punchState.loopPos == 0)
+                    {
+                        punchState.loopPos = punchState.history.Count;
+
+                    }
+                }
+                if (punchState.keyInfo.Key == ConsoleKey.UpArrow && punchState.loopPos > 0)
+                {
+                    punchState.loopPos -= 1;
+                    punchState.displayCmd = punchState.history[punchState.loopPos];
+
+                }
+                if (punchState.keyInfo.Key == ConsoleKey.DownArrow)
+                {
+
+                    if ((punchState.loopPos + 1) > (punchState.history.Count - 1))
+                    {
+                        punchState.displayCmd = "";
+                    }
+                    else
+                    {
+                        punchState.loopPos += 1;
+                        punchState.displayCmd = punchState.history[punchState.loopPos];
+                    }
+                }
+            }
+            return punchState;
+        }
+
+        // Here is where we execute posh code
+        public static PunchState PSExec(PunchState punchState)
+        {
+            using (Pipeline pipeline = punchState.runspace.CreatePipeline())
+            {
+                pipeline.Commands.AddScript(punchState.cmd);
+                // If we're in an auto-complete loop, we want the PSObjects, not the string from the output of the command
+                // TODO: clean this up
+                if (punchState.loopType != null)
+                {
+                    pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
+                }
+                else
+                {
+                    pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output); pipeline.Commands.Add("out-default");
+                }
+                try
+                {
+                    punchState.results = pipeline.Invoke();
+                }
+                catch (Exception e)
+                {
+                    punchState.results = null;
+                    Display.Exception(punchState, e.Message);
+                }
+
+                pipeline.Dispose();
+            }
+            //Clear out command so it doesn't get echo'd out to console again.
+            punchState.ClearIO();
+            if (punchState.loopType == null)
+            {
+                punchState.cmdComplete = true;
+            }
+            return punchState;
+        }
     }
+
 }

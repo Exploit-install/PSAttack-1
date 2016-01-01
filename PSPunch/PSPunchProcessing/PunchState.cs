@@ -11,6 +11,10 @@ namespace PSPunch.PSPunchProcessing
 {
     class PunchState
     {
+        // Powershell runsapce and host
+        public Runspace runspace { get; set; }
+        public PSPunchHost host { get; set; }
+
         // contents of cmd are what are executed
         public string cmd { get; set; }
 
@@ -23,9 +27,6 @@ namespace PSPunch.PSPunchProcessing
         // string to store displayCmd for autocomplete concatenation
         public string displayCmdSeed { get; set; }
 
-        // string to store the command that we're autocompleting params for
-        public string paramCmdSeed { get; set; }
-
         // key that was last pressed
         public ConsoleKeyInfo keyInfo { get; set; }
         
@@ -37,8 +38,6 @@ namespace PSPunch.PSPunchProcessing
         
         // loop states
         public string loopType { get; set; }
-        public Runspace runspace { get; set; }
-        public PSPunchHost host { get; set; }
         
         // ouput is what's print to screen
         public string output { get; set; }
@@ -49,8 +48,10 @@ namespace PSPunch.PSPunchProcessing
         // set once execution of a command has completed, breaks the while loop in main.
         public bool cmdComplete { get; set; }
 
-        // command history
+        // used to store command history
         public List<string> history { get; set; }
+
+        // clear out cruft from autocomplete loops
         public void ClearLoop()
         {
             this.loopType = null;
@@ -60,6 +61,7 @@ namespace PSPunch.PSPunchProcessing
             this.loopPos = 0;
         }
 
+        // clear out cruft from working with commands
         public void ClearIO(bool display=false)
         {
             if (display == true)
@@ -74,6 +76,12 @@ namespace PSPunch.PSPunchProcessing
 
         public PunchState()
         {
+            // init host and runspace
+            this.host = new PSPunchHost();
+            Runspace runspace = RunspaceFactory.CreateRunspace(this.host);
+            runspace.Open();
+            this.runspace = runspace;
+            // init history
             this.history = new List<string>();
         }
     }

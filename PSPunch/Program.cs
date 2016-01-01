@@ -14,17 +14,13 @@ namespace PSPunch
     {
         static PunchState PSInit()
         {
-            //Display Loading Message
+            // Display Loading Message
             Console.ForegroundColor = PSColors.logoText;
             Console.WriteLine(Strings.banner);
             Console.WriteLine("PS>Punch is loading...");
 
-            //Setup PS Host and runspace
+            // new punchstate
             PunchState punchState = new PunchState();
-            punchState.host = new PSPunchHost();
-            Runspace runspace = RunspaceFactory.CreateRunspace(punchState.host);
-            runspace.Open();
-            punchState.runspace = runspace;
 
             //Decrypt modules
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -41,13 +37,13 @@ namespace PSPunch
                     PSPUtils.ImportModules(punchState, moduleStream);
                 }
             }
-            //Setup PS env
+            // Setup PS env
             punchState.cmd = "set-executionpolicy bypass -Scope process -Force";
             Processing.PSExec(punchState);
             punchState.cmd = "function Test-Admin { $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent(); $prp = New-Object System.Security.Principal.WindowsPrincipal($wid); $adm = [System.Security.Principal.WindowsBuiltInRole]::Administrator; $prp.IsInRole($adm);}; write-host 'Is Admin: '(test-admin)";
             punchState = Processing.PSExec(punchState);
 
-            //Setup Console
+            // Setup Console
             Console.BackgroundColor = PSColors.background;
             Console.Clear();
 
