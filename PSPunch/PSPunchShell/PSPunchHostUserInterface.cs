@@ -106,13 +106,13 @@ namespace PSPunch.PSPunchShell
         public override void Write(ConsoleColor foregroundColor, ConsoleColor backgroundColor, string message)
         {
             Console.ForegroundColor = PSColors.outputText;
-            Console.WriteLine(message);
+            Console.Write(message);
         }
 
         public override void Write(string message)
         {
             Console.ForegroundColor = PSColors.outputText;
-            Console.WriteLine(message);
+            Console.Write(message);
         }
 
         public override void WriteDebugLine(string message)
