@@ -36,10 +36,7 @@ namespace PSPunch.PSPunchProcessing
         public int promptPos { get; set; }
         
         // loop states
-        public bool inLoop { get; set; }
-        public bool pathLoop { get; set; }
-        public bool cmdLoop { get; set; }
-        public bool paramLoop { get; set; }
+        public string loopType { get; set; }
         public Runspace runspace { get; set; }
         public PSPunchHost host { get; set; }
         
@@ -56,19 +53,19 @@ namespace PSPunch.PSPunchProcessing
         public List<string> history { get; set; }
         public void ClearLoop()
         {
-            this.inLoop = false;
-            this.cmdLoop = false;
-            this.pathLoop = false;
-            this.paramLoop = false;
+            this.loopType = null;
             this.results = null;
             this.autocompleteSeed = null;
             this.displayCmdSeed = null;
             this.loopPos = 0;
         }
 
-        public void ClearIO()
+        public void ClearIO(bool display=false)
         {
-            this.displayCmd = "";
+            if (display == true)
+            {
+                this.displayCmd = "";
+            }
             this.cmd = "";
             this.keyInfo = new ConsoleKeyInfo();
             this.cmdComplete = false;

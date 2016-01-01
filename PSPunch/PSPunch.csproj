@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSPunchProcessing\TabExpansion.cs" />
     <Compile Include="PSPunchShell\PSColors.cs" />
     <Compile Include="Utils\Display.cs" />
     <Compile Include="PSPunchProcessing\PunchState.cs" />

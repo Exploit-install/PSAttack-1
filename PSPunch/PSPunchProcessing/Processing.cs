@@ -19,7 +19,7 @@ namespace PSPunch.PSPunchProcessing
                 pipeline.Commands.AddScript(punchState.cmd);
                 // If we're in an auto-complete loop, we want the PSObjects, not the string from the output of the command
                 // TODO: clean this up
-                if (punchState.inLoop)
+                if (punchState.loopType != null)
                 {
                     pipeline.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
                 }
@@ -41,132 +41,9 @@ namespace PSPunch.PSPunchProcessing
             }
             //Clear out command so it doesn't get echo'd out to console again.
             punchState.ClearIO();
-            if (!(punchState.inLoop))
+            if (punchState.loopType == null)
             {
                 punchState.cmdComplete = true;
-            }
-            return punchState;
-        }
-
-        //called when tab is pressed
-        static PunchState cmdAutoComplete(PunchState punchState)
-        {
-            if (punchState.autocompleteSeed.Length == 0)
-            {
-                return punchState;
-            }
-            // setup autocomplete loop
-            if (punchState.inLoop)
-            {
-                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
-                {
-                    punchState.loopPos -= 1;
-                }
-                else if (punchState.loopPos < punchState.results.Count)
-                {
-                    punchState.loopPos += 1;
-                }
-                try
-                {
-                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].BaseObject.ToString();
-                }
-                catch
-                {
-
-                }
-                return punchState;
-            }
-            punchState.cmd = punchState.autocompleteSeed;
-            punchState.inLoop = true;
-            punchState.cmd = "Get-Command " + punchState.cmd + "*";
-            punchState = PSExec(punchState);
-            if (punchState.results.Count > 0)
-            {
-                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].BaseObject.ToString();
-            }
-            return punchState;
-        }
-
-        //called when tab is pressed
-        static PunchState pathAutoComplete(PunchState punchState)
-        {
-            punchState.pathLoop = true;
-            if (punchState.autocompleteSeed.Length == 0)
-            {
-                return punchState;
-            }
-            // setup autocomplete loop
-            if (punchState.inLoop)
-            {
-                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
-                {
-                    punchState.loopPos -= 1;
-                }
-                else if (punchState.loopPos < punchState.results.Count)
-                {
-                    punchState.loopPos += 1;
-                }
-                try
-                {
-                    punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
-                }
-                catch
-                {
-
-                }
-                return punchState;
-            }
-            punchState.cmd = punchState.autocompleteSeed;
-            punchState.inLoop = true;
-            punchState.cmd = "Get-ChildItem " + punchState.cmd +"*";
-            punchState = PSExec(punchState);
-            if (punchState.results.Count > 0)
-            {
-                punchState.displayCmd = punchState.displayCmdSeed + punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
-            }
-            return punchState;
-        }
-
-        //called when tab and last char is -
-        static PunchState paramAutoComplete(PunchState punchState)
-        {
-            punchState.paramLoop = true;
-            if (punchState.autocompleteSeed.Length == 0)
-            {
-                return punchState;
-            }
-            // setup autocomplete loop
-            if (punchState.inLoop)
-            {
-                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift && punchState.loopPos > 0)
-                {
-                    punchState.loopPos -= 1;
-                }
-                else if (punchState.loopPos < punchState.results.Count)
-                {
-                    punchState.loopPos += 1;
-                }
-                try
-                {
-                    punchState.displayCmd = punchState.displayCmdSeed + "-" + punchState.results[punchState.loopPos].ToString();
-                }
-                catch
-                {
-
-                }
-                return punchState;
-            }
-            int lastParam = punchState.displayCmd.LastIndexOf(" -");
-            string paramSeed = punchState.displayCmd.Substring(lastParam).Replace(" -","");
-            int firstSpace = punchState.displayCmd.IndexOf(" ");
-            string paramCmd = punchState.displayCmdSeed.Substring(0, firstSpace);
-            punchState.cmd = punchState.autocompleteSeed;
-            punchState.inLoop = true;
-            punchState.cmd = "(Get-Command " + paramCmd +").Parameters.Keys | Where{$_ -like '"+paramSeed+"*'}";
-            punchState = PSExec(punchState);
-            if (punchState.results.Count > 0)
-            {
-                punchState.displayCmd = punchState.displayCmdSeed + "-" + punchState.results[punchState.loopPos].ToString();
             }
             return punchState;
         }
@@ -176,9 +53,9 @@ namespace PSPunch.PSPunchProcessing
         {
             if (punchState.history.Count > 0)
             {
-                if (!(punchState.inLoop))
+                if (punchState.loopType != null)
                 {
-                    punchState.inLoop = true;
+                    punchState.loopType = "history";
                     if (punchState.loopPos == 0)
                     {
                         punchState.loopPos = punchState.history.Count;
@@ -215,7 +92,7 @@ namespace PSPunch.PSPunchProcessing
             if (punchState.keyInfo.Key == ConsoleKey.Backspace)
             {
                 punchState.ClearLoop();
-                if (punchState.displayCmd.Length > 0)
+                if (punchState.displayCmd != null && punchState.displayCmd.Length > 0)
                 {
                     punchState.displayCmd = punchState.displayCmd.Remove(punchState.displayCmd.Length - 1);
                 }
@@ -246,52 +123,11 @@ namespace PSPunch.PSPunchProcessing
                     punchState = Processing.PSExec(punchState);
                     Display.Output(punchState);
                 }
-                punchState.ClearIO();
+                punchState.ClearIO(display:true);
             }
             else if (punchState.keyInfo.Key == ConsoleKey.Tab)
             {
-                if (punchState.autocompleteSeed == null)
-                {
-                    int lastSpace = punchState.displayCmd.LastIndexOf(" ");
-                    if (lastSpace > 0)
-                    {
-                        // get the command that we're autocompleting for by looking for the last space and pipe
-                        // anything after the last space we're going to try and autocomplete. Anything between the
-                        // last pipe and last space we assume is a command. 
-                        int lastPipe = punchState.displayCmd.Substring(0, lastSpace + 1).LastIndexOf("|");
-                        punchState.autocompleteSeed = punchState.displayCmd.Substring(lastSpace);
-                        if (lastSpace - lastPipe > 2)
-                        {
-                            punchState.displayCmdSeed = punchState.displayCmd.Substring(lastPipe+1, (lastSpace-lastPipe));
-                        }
-                        else
-                        {
-                            punchState.displayCmdSeed = punchState.displayCmd.Substring(0, lastSpace);
-                        }
-                        // trim leading space from command in the event of "cmd | cmd"
-                        if (punchState.displayCmdSeed.IndexOf(" ").Equals(0))
-                        {
-                            punchState.displayCmdSeed = punchState.displayCmd.Substring(1, lastSpace);
-                        }
-                    }
-                    else
-                    {
-                        punchState.autocompleteSeed = punchState.displayCmd;
-                        punchState.displayCmdSeed = "";
-                    }
-                }
-
-                if (punchState.autocompleteSeed.Contains(" -"))
-                {
-                    return paramAutoComplete(punchState);
-                }
-                else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\") || punchState.autocompleteSeed.Contains(".\\")) {
-                    return pathAutoComplete(punchState);
-                }
-                else
-                {
-                    return cmdAutoComplete(punchState);
-                }
+               return TabExpansion.Process(punchState);
             }
             else
             {
