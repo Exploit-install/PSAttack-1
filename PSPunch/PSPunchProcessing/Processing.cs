@@ -45,6 +45,12 @@ namespace PSPunch.PSPunchProcessing
                     Display.printPrompt(punchState);
 
                 }
+                else if (punchState.cmd.Contains(".exe"))
+                {
+                    punchState.cmd = "Start-Process -NoNewWindow -Wait " + punchState.cmd;
+                    punchState = Processing.PSExec(punchState);
+                    Display.Output(punchState);
+                }
                 else if (punchState.cmd != null)
                 {
                     punchState = Processing.PSExec(punchState);
