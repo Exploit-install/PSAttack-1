@@ -162,7 +162,7 @@ Powercat\Powercat.ps1,Powercat,Recon; Exfiltration; Backdoors,Netcat - The Power
   process 
   {
     Write-Verbose "Searching Attacks for $term.."
-    $attacks | Where-Object {$_.Desc -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
+    $attacks | Where-Object {$_.Description -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
 
   }
 }
