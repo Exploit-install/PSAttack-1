@@ -16,7 +16,7 @@ PS>Punch combines some of the best projects in the infosec powershell community 
 1. It doesn't rely on powershell.exe. Instead it calls powershell directly through the dotNet framework.
 2. The modules that are bundled with the exe are encrypted. When PS>Punch starts, they are decrypted into memory. The unencrypted payloads never touch disk, making it difficult for most antivirus engines to catch them.
 
-Offensively, PS>Punch contains commands over 100 commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
+Offensively, PS>Punch contains over 100 commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
 
 * [Powersploit](https://github.com/PowerShellMafia/PowerSploit)
   - Invoke-Mimikatz
@@ -37,6 +37,10 @@ Offensively, PS>Punch contains commands over 100 commands for Privilege Escalati
   - Invoke-PsUACme
 * [Powercat](https://github.com/besimorhino/powercat)
 * [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
+
+It also comes bundled with `get-attack`, a command that allows you to search through the included commands and find the attack that you're looking for.
+
+![Get-Attack](http://i.imgur.com/XKUEvkl.png)
 
 #### How to use it
 PS>Punch works best when you generate your own version through [PS>Attack](https://www.github.com/jaredhaight/PSAttack). PS>Attack will handle downloading PS>Punch, updating the modules to the latest versions, encrypting them with a custom key and then compiling the whole thing into an executable.
