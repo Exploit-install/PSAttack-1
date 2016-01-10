@@ -1,35 +1,26 @@
 ﻿function Get-Attack {
   <#
   .SYNOPSIS
-  Find a PowerShell attack given a keyword
+  Find a PowerShell attack for a given keyword
 
   .DESCRIPTION
-  Get-Attack will return a list of attack objects give a search query and JSON blob to search. By default, it assumes that
-  the attack is available as an embedded resource at modules\list.json. This is because Get-Attack was designed for PS>Punch
-  You can specify an alternative JSON blob by using the -source parameter
+  Get-Attack will return a list of attacks available in PS>Punch for a given search query.
 
   .EXAMPLE
   PS> Get-Attack password
 
   .EXAMPLE
-  PS> Get-Attack -term password -attacksCSV C:\attacks.csv
+  PS> Get-Attack -term password 
   
-  .EXAMPLE
-  Search for attacks that contain the words "users" and "recon"
-  PS> Get-Attack -term users recon
-  
-  .EXAMPLE
-  Search for attacks with the phrase "domain admin"
-  PS> Get-Attack -term "Domain Admin"
-
   .PARAMETER term
-  What you want to search for. You can specify a single term, multiple terms or a specific phrase by using quotes.
+  What you want to search for.
   #>
+
   [CmdletBinding()]
   param
   (
     [Parameter(Mandatory=$True,
-      HelpMessage='What are we searching for?')]
+      HelpMessage='What are we search for?')]
     [string[]]$term
   )
 
@@ -162,7 +153,7 @@ Powercat\Powercat.ps1,Powercat,Recon; Exfiltration; Backdoors,Netcat - The Power
   process 
   {
     Write-Verbose "Searching Attacks for $term.."
-    $attacks | Where-Object {$_.Description -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
+    $attacks | Where-Object {$_.Desc -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
 
   }
 }
