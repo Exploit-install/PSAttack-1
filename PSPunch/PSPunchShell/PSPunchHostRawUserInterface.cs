@@ -25,7 +25,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return new System.Management.Automation.Host.Size(120, 120);
+                return new System.Management.Automation.Host.Size(120, 3000);
             }
             set
             {
