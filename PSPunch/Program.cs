@@ -16,7 +16,9 @@ namespace PSPunch
         {
             // Display Loading Message
             Console.ForegroundColor = PSColors.logoText;
-            Console.WriteLine(Strings.banner);
+            Random random = new Random();
+            int pspLogoInt = random.Next(Strings.pspLogos.Count);
+            Console.WriteLine(Strings.pspLogos[pspLogoInt]);
             Console.WriteLine("PS>Punch is loading...");
 
             // new punchstate
@@ -76,6 +78,7 @@ namespace PSPunch
         static void Main(string[] args)
         {
             Console.Title = Strings.windowTitle;
+            Console.SetWindowSize(120, 50);
             PunchState punchState = PSInit();
             while (true)
             {
