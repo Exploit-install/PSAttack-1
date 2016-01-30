@@ -78,7 +78,6 @@ namespace PSPunch
         static void Main(string[] args)
         {
             Console.Title = Strings.windowTitle;
-            Console.SetWindowSize(120, 50);
             PunchState punchState = PSInit();
             while (true)
             {
