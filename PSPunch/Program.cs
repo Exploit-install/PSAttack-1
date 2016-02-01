@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Configuration;
+using System.Security.Principal;
 using System.Reflection;
 using System.Management.Automation.Runspaces;
 using PSPunch.PSPunchProcessing;
@@ -77,10 +78,17 @@ namespace PSPunch
 
         static void Main(string[] args)
         {
+            // check for admin 
+            Boolean isAdmin = false;
+            if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                isAdmin = true;
+                System.Diagnostics.Process.EnterDebugMode();
+            }
             Console.Title = Strings.windowTitle;
             PunchState punchState = PSInit();
             // setup debug var
-            String debugCmd = "$debug = @{'.NET' = '" + System.Environment.Version +"'}";
+            String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version +"';'isAdmin'='"+isAdmin+"'}";
             punchState.cmd = debugCmd;
             Processing.PSExec(punchState);
             while (true)
