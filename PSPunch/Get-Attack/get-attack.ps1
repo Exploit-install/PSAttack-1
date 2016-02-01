@@ -174,13 +174,19 @@ categories. Those categories are:
 [*] File Tools
 [*] Network
 
-Or you can search for any word you'd like, for example: get-attack netcat
+Get-Attack Examples:
+[*] get-attack netcat
+[*] get-attack passwords
+[*] get-attack smb
 
-Once you find an attack you want to try, you can find out more about it with the get-help
-command. For example "get-help invoke-mimikatz"
+Once you find an attack you want to try, you can find out more about the command with the
+get-help command. You can also use the -Examples parameter with 'get-help' to view examples
+of using most commands.
+
+Get-Help Examples:
+[*] get-help invoke-mimikatz
+[*] get-help invoke-mimikatz -Examples
 		
-You can see examples of an command by using the -Examples parameter when running get-help.
-For example: "get-help invoke-mimikatz -Examples"		
 "@
 		return $message
 	}
