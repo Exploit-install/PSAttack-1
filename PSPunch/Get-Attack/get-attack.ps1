@@ -19,9 +19,8 @@
   [CmdletBinding()]
   param
   (
-    [Parameter(Mandatory=$True,
-      HelpMessage='What are we search for?')]
-    [string[]]$term
+    [Parameter(HelpMessage='What are we search for?')]
+    [string[]]$term = ""
   )
 
   begin 
@@ -152,8 +151,39 @@ Powercat\Powercat.ps1,Powercat,Recon; Exfiltration; Backdoors,Netcat - The Power
 
   process 
   {
-    Write-Verbose "Searching Attacks for $term.."
-    $attacks | Where-Object {$_.Desc -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
+	if ($term) 
+	{
+		Write-Verbose "Searching Attacks for $term.."
+		$results = $attacks | Where-Object {$_.Description -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
+		return $results
+	}
+	else
+	{
+		$message = @"
+Welcome to PS>Punch!
+
+Get-Attack will let you search through the built in attacks to find what you're looking for.
+
+The search will look through the description of the attacks as well as some predefined
+categories. Those categories are:
+
+[*] Recon
+[*] Passwords
+[*] Exfiltration
+[*] Code Execution
+[*] File Tools
+[*] Network
+
+Or you can search for any word you'd like, for example: get-attack netcat
+
+Once you find an attack you want to try, you can find out more about it with the get-help
+command. For example "get-help invoke-mimikatz"
+		
+You can see examples of an command by using the -Examples parameter when running get-help.
+For example: "get-help invoke-mimikatz -Examples"		
+"@
+		return $message
+	}
 
   }
 }
