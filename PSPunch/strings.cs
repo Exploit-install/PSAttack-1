@@ -69,6 +69,6 @@ namespace PSPunch
 
 ";
         public static string moduleLoadError = "There was an error loading this module \nError message:\n\n{0}\n";
-        public static string welcomeMessage = "Welcome to PS>Punch! This is version {0}. \n{1}\nThis is running in .NET v{2}\n";
+        public static string welcomeMessage = "Welcome to PS>Punch! This is version {0}. \n{1}\nFor help getting started, run 'get-attack'\n";
     }
 }

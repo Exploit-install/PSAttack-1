@@ -66,7 +66,7 @@ namespace PSPunch
                 string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.BuildDate.txt")).ReadToEnd();
                 buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Punch thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttack \n";
             }
-            Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString, System.Environment.Version);
+            Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString);
             // Display Prompt
             punchState.loopPos = 0;
             punchState.cmdComplete = false;
@@ -79,6 +79,10 @@ namespace PSPunch
         {
             Console.Title = Strings.windowTitle;
             PunchState punchState = PSInit();
+            // setup debug var
+            String debugCmd = "$debug = @{'.NET' = '" + System.Environment.Version +"'}";
+            punchState.cmd = debugCmd;
+            Processing.PSExec(punchState);
             while (true)
             {
                 punchState.keyInfo = Console.ReadKey();
