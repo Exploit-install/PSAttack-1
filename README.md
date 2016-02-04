@@ -16,7 +16,7 @@ PS>Attack combines some of the best projects in the infosec powershell community
 1. It doesn't rely on powershell.exe. Instead it calls powershell directly through the dotNet framework.
 2. The modules that are bundled with the exe are encrypted. When PS>Punch starts, they are decrypted into memory. The unencrypted payloads never touch disk, making it difficult for most antivirus engines to catch them.
 
-Offensively, PS>Attack contains over 100 commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
+PS>Attack contains over 100 commands for Privilege Escalation, Recon and Data Exfilitration. It does this by including the following modules and commands:
 
 * [Powersploit](https://github.com/PowerShellMafia/PowerSploit)
   - Invoke-Mimikatz
