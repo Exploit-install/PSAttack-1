@@ -86,6 +86,7 @@ namespace PSPunch
                 System.Diagnostics.Process.EnterDebugMode();
             }
             Console.Title = Strings.windowTitle;
+            Console.BufferHeight = Int16.MaxValue - 10;
             PunchState punchState = PSInit();
             // setup debug var
             String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version +"';'isAdmin'='"+isAdmin+"'}";
