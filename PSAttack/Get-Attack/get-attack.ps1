@@ -4,7 +4,7 @@
   Find a PowerShell attack for a given keyword
 
   .DESCRIPTION
-  Get-Attack will return a list of attacks available in PS>Punch for a given search query.
+  Get-Attack will return a list of attacks available in PS>Attack for a given search query.
 
   .EXAMPLE
   PS> Get-Attack password

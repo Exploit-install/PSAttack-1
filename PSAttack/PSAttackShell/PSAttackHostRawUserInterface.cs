@@ -142,7 +142,7 @@ namespace PSAttack.PSAttackShell
         {
             get
             {
-                return "PSPUNCH!!";
+                return "PSATTACK!!";
             }
             set
             {

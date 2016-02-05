@@ -22,7 +22,7 @@ namespace PSAttack
             Console.WriteLine(Strings.psaLogos[pspLogoInt]);
             Console.WriteLine("PS>Attack is loading...");
 
-            // new punchstate
+            // new attack
             AttackState attackState = new AttackState();
 
             //Decrypt modules
@@ -85,16 +85,16 @@ namespace PSAttack
             }
             Console.Title = Strings.windowTitle;
             Console.BufferHeight = Int16.MaxValue - 10;
-            AttackState punchState = PSInit();
+            AttackState attackState = PSInit();
             // setup debug var
             String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version +"';'isAdmin'='"+isAdmin+"'}";
-            punchState.cmd = debugCmd;
-            Processing.PSExec(punchState);
+            attackState.cmd = debugCmd;
+            Processing.PSExec(attackState);
             while (true)
             {
-                punchState.keyInfo = Console.ReadKey();
-                punchState = Processing.CommandProcessor(punchState);
-                Display.Output(punchState);
+                attackState.keyInfo = Console.ReadKey();
+                attackState = Processing.CommandProcessor(attackState);
+                Display.Output(attackState);
             }
         }
     }

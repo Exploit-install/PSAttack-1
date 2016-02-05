@@ -7,149 +7,149 @@ namespace PSAttack.PSAttackProcessing
 {
     class TabExpansion
     {
-        public static AttackState Process(AttackState punchState)
+        public static AttackState Process(AttackState attackState)
         {
-            if (punchState.loopType == null)
+            if (attackState.loopType == null)
             {
-                int lastSpace = punchState.displayCmd.LastIndexOf(" ");
+                int lastSpace = attackState.displayCmd.LastIndexOf(" ");
                 if (lastSpace > 0)
                 {
                     // get the command that we're autocompleting for by looking for the last space and pipe
                     // anything after the last space we're going to try and autocomplete. Anything between the
                     // last pipe and last space we assume is a command. 
-                    int lastPipe = punchState.displayCmd.Substring(0, lastSpace + 1).LastIndexOf("|");
-                    punchState.autocompleteSeed = punchState.displayCmd.Substring(lastSpace);
+                    int lastPipe = attackState.displayCmd.Substring(0, lastSpace + 1).LastIndexOf("|");
+                    attackState.autocompleteSeed = attackState.displayCmd.Substring(lastSpace);
                     if (lastSpace - lastPipe > 2)
                     {
-                        punchState.displayCmdSeed = punchState.displayCmd.Substring(lastPipe + 1, (lastSpace - lastPipe));
+                        attackState.displayCmdSeed = attackState.displayCmd.Substring(lastPipe + 1, (lastSpace - lastPipe));
                     }
                     else
                     {
-                        punchState.displayCmdSeed = punchState.displayCmd.Substring(0, lastSpace);
+                        attackState.displayCmdSeed = attackState.displayCmd.Substring(0, lastSpace);
                     }
                     // trim leading space from command in the event of "cmd | cmd"
-                    if (punchState.displayCmdSeed.IndexOf(" ").Equals(0))
+                    if (attackState.displayCmdSeed.IndexOf(" ").Equals(0))
                     {
-                        punchState.displayCmdSeed = punchState.displayCmd.Substring(1, lastSpace);
+                        attackState.displayCmdSeed = attackState.displayCmd.Substring(1, lastSpace);
                     }
                 }
                 else
                 {
-                    punchState.autocompleteSeed = punchState.displayCmd;
-                    punchState.displayCmdSeed = "";
+                    attackState.autocompleteSeed = attackState.displayCmd;
+                    attackState.displayCmdSeed = "";
                 }
-                if (punchState.autocompleteSeed.Length == 0)
+                if (attackState.autocompleteSeed.Length == 0)
                 {
-                    return punchState;
+                    return attackState;
                 }
 
                 // route to appropriate autcomplete handler
-                if (punchState.autocompleteSeed.Contains(" -"))
+                if (attackState.autocompleteSeed.Contains(" -"))
                 {
-                    punchState = paramAutoComplete(punchState);
+                    attackState = paramAutoComplete(attackState);
                 }
-                else if (punchState.autocompleteSeed.Contains("$"))
+                else if (attackState.autocompleteSeed.Contains("$"))
                 {
-                    punchState = variableAutoComplete(punchState);
+                    attackState = variableAutoComplete(attackState);
                 }
-                else if (punchState.autocompleteSeed.Contains(":") || punchState.autocompleteSeed.Contains("\\"))
+                else if (attackState.autocompleteSeed.Contains(":") || attackState.autocompleteSeed.Contains("\\"))
                 {
-                    punchState = pathAutoComplete(punchState);
+                    attackState = pathAutoComplete(attackState);
                 }
                 else
                 {
-                    punchState = cmdAutoComplete(punchState);
+                    attackState = cmdAutoComplete(attackState);
                 }
             }
             // If we're already in an autocomplete loop, increment loopPos appropriately
-            else if (punchState.loopType != null)
+            else if (attackState.loopType != null)
             {
-                if (punchState.keyInfo.Modifiers == ConsoleModifiers.Shift)
+                if (attackState.keyInfo.Modifiers == ConsoleModifiers.Shift)
                 {
-                    punchState.loopPos -= 1;
+                    attackState.loopPos -= 1;
                     // loop around if we're at the beginning
-                    if (punchState.loopPos < 0)
+                    if (attackState.loopPos < 0)
                     {
-                        punchState.loopPos = punchState.results.Count - 1;
+                        attackState.loopPos = attackState.results.Count - 1;
                     }
                 }
                 else
                 {
-                    punchState.loopPos += 1;
+                    attackState.loopPos += 1;
                     // loop around if we reach the end
-                    if (punchState.loopPos >= punchState.results.Count)
+                    if (attackState.loopPos >= attackState.results.Count)
                     {
-                        punchState.loopPos = 0;
+                        attackState.loopPos = 0;
                     }
                 }
             }
 
             // if we have results, format them and return them
-            if (punchState.results.Count > 0)
+            if (attackState.results.Count > 0)
             {
                 string seperator = "";
                 string result;
-                switch (punchState.loopType)
+                switch (attackState.loopType)
                 {
                     case "param":
                         seperator = "-";
-                        result = punchState.results[punchState.loopPos].ToString();
+                        result = attackState.results[attackState.loopPos].ToString();
                         break;
                     case "variable":
                         seperator = "$";
-                        result = punchState.results[punchState.loopPos].Members["Name"].Value.ToString();
+                        result = attackState.results[attackState.loopPos].Members["Name"].Value.ToString();
                         break;
                     case "path":
-                        result = punchState.results[punchState.loopPos].Members["FullName"].Value.ToString();
+                        result = attackState.results[attackState.loopPos].Members["FullName"].Value.ToString();
                         break;
                     default:
-                        result = punchState.results[punchState.loopPos].BaseObject.ToString();
+                        result = attackState.results[attackState.loopPos].BaseObject.ToString();
                         break;
                 }
-                punchState.displayCmd = punchState.displayCmdSeed + seperator + result;
+                attackState.displayCmd = attackState.displayCmdSeed + seperator + result;
             }
-            return punchState;
+            return attackState;
         }
 
         // PARAMETER AUTOCOMPLETE
-        static AttackState paramAutoComplete(AttackState punchState)
+        static AttackState paramAutoComplete(AttackState attackState)
         {
-            punchState.loopType = "param";
-            int lastParam = punchState.displayCmd.LastIndexOf(" -");
-            string paramSeed = punchState.displayCmd.Substring(lastParam).Replace(" -", "");
-            int firstSpace = punchState.displayCmd.IndexOf(" ");
-            string paramCmd = punchState.displayCmdSeed.Substring(0, firstSpace);
-            punchState.cmd = "(Get-Command " + paramCmd + ").Parameters.Keys | Where{$_ -like '" + paramSeed + "*'}";
-            punchState = Processing.PSExec(punchState);
-            return punchState;
+            attackState.loopType = "param";
+            int lastParam = attackState.displayCmd.LastIndexOf(" -");
+            string paramSeed = attackState.displayCmd.Substring(lastParam).Replace(" -", "");
+            int firstSpace = attackState.displayCmd.IndexOf(" ");
+            string paramCmd = attackState.displayCmdSeed.Substring(0, firstSpace);
+            attackState.cmd = "(Get-Command " + paramCmd + ").Parameters.Keys | Where{$_ -like '" + paramSeed + "*'}";
+            attackState = Processing.PSExec(attackState);
+            return attackState;
         }
 
         // VARIABLE AUTOCOMPLETE
-        static AttackState variableAutoComplete(AttackState punchState)
+        static AttackState variableAutoComplete(AttackState attackState)
         {
-            punchState.loopType = "variable";
-            string variableSeed = punchState.autocompleteSeed.Replace("$", "");
-            punchState.cmd = "Get-Variable " + variableSeed + "*";
-            punchState = Processing.PSExec(punchState);
-            return punchState;
+            attackState.loopType = "variable";
+            string variableSeed = attackState.autocompleteSeed.Replace("$", "");
+            attackState.cmd = "Get-Variable " + variableSeed + "*";
+            attackState = Processing.PSExec(attackState);
+            return attackState;
         }
 
         // PATH AUTOCOMPLETE
-        static AttackState pathAutoComplete(AttackState punchState)
+        static AttackState pathAutoComplete(AttackState attackState)
         {
-            punchState.loopType = "path";
-            punchState.cmd = "Get-ChildItem " + punchState.autocompleteSeed + "*";
-            punchState = Processing.PSExec(punchState);
-            return punchState;
+            attackState.loopType = "path";
+            attackState.cmd = "Get-ChildItem " + attackState.autocompleteSeed + "*";
+            attackState = Processing.PSExec(attackState);
+            return attackState;
         }
                 
         // COMMAND AUTOCOMPLETE
-        static AttackState cmdAutoComplete(AttackState punchState)
+        static AttackState cmdAutoComplete(AttackState attackState)
         {
-            punchState.loopType = "cmd";
-            punchState.cmd = "Get-Command " + punchState.autocompleteSeed + "*";
-            punchState = Processing.PSExec(punchState);
-            return punchState;
+            attackState.loopType = "cmd";
+            attackState.cmd = "Get-Command " + attackState.autocompleteSeed + "*";
+            attackState = Processing.PSExec(attackState);
+            return attackState;
         }
 
     }

@@ -11,7 +11,7 @@ namespace PSAttack
 {
     class PSAttackHost : PSHost
     {
-        private PSAttackHostUserInterface PSPunchUI = new PSAttackHostUserInterface();
+        private PSAttackHostUserInterface PSAttackUI = new PSAttackHostUserInterface();
         private Guid gid = Guid.NewGuid();
         private System.Globalization.CultureInfo originalCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
         private System.Globalization.CultureInfo originalUICultureInfo = System.Threading.Thread.CurrentThread.CurrentUICulture;
@@ -38,7 +38,7 @@ namespace PSAttack
         {
             get
             {
-                return "PS PUNCH!!!";
+                return "PS ATTACK!!!";
             }
         }
 
@@ -46,7 +46,7 @@ namespace PSAttack
         {
             get
             {
-                return PSPunchUI;
+                return PSAttackUI;
             }
         }
 
