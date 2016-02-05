@@ -5,9 +5,9 @@ using System.Management.Automation.Host;
 using System.Text;
 // using System.Threading.Tasks;
 
-namespace PSPunch.PSPunchShell
+namespace PSAttack.PSAttackShell
 {
-    class PSPunchRawUserInterface : PSHostRawUserInterface
+    class PSAttackRawUserInterface : PSHostRawUserInterface
     {
         public override ConsoleColor BackgroundColor
         {

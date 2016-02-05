@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
-using PSPunch.PSPunchShell;
+using PSAttack.PSAttackShell;
 
-namespace PSPunch.PSPunchProcessing
+namespace PSAttack.PSAttackProcessing
 {
-    class PunchState
+    class AttackState
     {
         // Powershell runsapce and host
         public Runspace runspace { get; set; }
-        public PSPunchHost host { get; set; }
+        public PSAttackHost host { get; set; }
 
         // contents of cmd are what are executed
         public string cmd { get; set; }
@@ -74,10 +74,10 @@ namespace PSPunch.PSPunchProcessing
             this.output = null;
         }
 
-        public PunchState()
+        public AttackState()
         {
             // init host and runspace
-            this.host = new PSPunchHost();
+            this.host = new PSAttackHost();
             Runspace runspace = RunspaceFactory.CreateRunspace(this.host);
             runspace.Open();
             this.runspace = runspace;

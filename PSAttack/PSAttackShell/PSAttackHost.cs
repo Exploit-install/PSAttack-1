@@ -5,13 +5,13 @@ using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Globalization;
 using System.Threading;
-using PSPunch.PSPunchShell;
+using PSAttack.PSAttackShell;
 
-namespace PSPunch
+namespace PSAttack
 {
-    class PSPunchHost : PSHost
+    class PSAttackHost : PSHost
     {
-        private PSPunchHostUserInterface PSPunchUI = new PSPunchHostUserInterface();
+        private PSAttackHostUserInterface PSPunchUI = new PSAttackHostUserInterface();
         private Guid gid = Guid.NewGuid();
         private System.Globalization.CultureInfo originalCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
         private System.Globalization.CultureInfo originalUICultureInfo = System.Threading.Thread.CurrentThread.CurrentUICulture;

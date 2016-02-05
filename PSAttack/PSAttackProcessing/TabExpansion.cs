@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PSPunch.PSPunchProcessing
+namespace PSAttack.PSAttackProcessing
 {
     class TabExpansion
     {
-        public static PunchState Process(PunchState punchState)
+        public static AttackState Process(AttackState punchState)
         {
             if (punchState.loopType == null)
             {
@@ -112,7 +112,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         // PARAMETER AUTOCOMPLETE
-        static PunchState paramAutoComplete(PunchState punchState)
+        static AttackState paramAutoComplete(AttackState punchState)
         {
             punchState.loopType = "param";
             int lastParam = punchState.displayCmd.LastIndexOf(" -");
@@ -125,7 +125,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         // VARIABLE AUTOCOMPLETE
-        static PunchState variableAutoComplete(PunchState punchState)
+        static AttackState variableAutoComplete(AttackState punchState)
         {
             punchState.loopType = "variable";
             string variableSeed = punchState.autocompleteSeed.Replace("$", "");
@@ -135,7 +135,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         // PATH AUTOCOMPLETE
-        static PunchState pathAutoComplete(PunchState punchState)
+        static AttackState pathAutoComplete(AttackState punchState)
         {
             punchState.loopType = "path";
             punchState.cmd = "Get-ChildItem " + punchState.autocompleteSeed + "*";
@@ -144,7 +144,7 @@ namespace PSPunch.PSPunchProcessing
         }
                 
         // COMMAND AUTOCOMPLETE
-        static PunchState cmdAutoComplete(PunchState punchState)
+        static AttackState cmdAutoComplete(AttackState punchState)
         {
             punchState.loopType = "cmd";
             punchState.cmd = "Get-Command " + punchState.autocompleteSeed + "*";

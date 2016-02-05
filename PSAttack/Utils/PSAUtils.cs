@@ -6,23 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Management.Automation.Runspaces;
-using PSPunch.PSPunchShell;
-using PSPunch.PSPunchProcessing;
+using PSAttack.PSAttackShell;
+using PSAttack.PSAttackProcessing;
 
-namespace PSPunch.Utils
+namespace PSAttack.Utils
 {
-    class PSPUtils
+    class PSAUtils
     {
-        public static void ImportModules(PunchState punchState, Stream moduleStream)
+        public static void ImportModules(AttackState attackState, Stream moduleStream)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Modules.key.txt"));
+            StreamReader keyReader = new StreamReader(assembly.GetManifestResourceStream("PSAttack.Modules.key.txt"));
             string key = keyReader.ReadToEnd();
             try
             {
                 MemoryStream decMem = CryptoUtils.DecryptFile(moduleStream);
-                punchState.cmd = Encoding.Unicode.GetString(decMem.ToArray());
-                Processing.PSExec(punchState);
+                attackState.cmd = Encoding.Unicode.GetString(decMem.ToArray());
+                Processing.PSExec(attackState);
             }
             catch (Exception e)
             {

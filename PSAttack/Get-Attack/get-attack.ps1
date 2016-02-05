@@ -160,7 +160,7 @@ Powercat\Powercat.ps1,Powercat,Recon; Exfiltration; Backdoors,Netcat - The Power
 	else
 	{
 		$message = @"
-Welcome to PS>Punch!
+Welcome to PS>Attack!
 
 Get-Attack will let you search through the built in attacks to find what you're looking for.
 

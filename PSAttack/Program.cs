@@ -5,25 +5,25 @@ using System.Configuration;
 using System.Security.Principal;
 using System.Reflection;
 using System.Management.Automation.Runspaces;
-using PSPunch.PSPunchProcessing;
-using PSPunch.Utils;
-using PSPunch.PSPunchShell;
+using PSAttack.PSAttackProcessing;
+using PSAttack.Utils;
+using PSAttack.PSAttackShell;
 
-namespace PSPunch
+namespace PSAttack
 {
     class Program
     {
-        static PunchState PSInit()
+        static AttackState PSInit()
         {
             // Display Loading Message
             Console.ForegroundColor = PSColors.logoText;
             Random random = new Random();
-            int pspLogoInt = random.Next(Strings.pspLogos.Count);
-            Console.WriteLine(Strings.pspLogos[pspLogoInt]);
-            Console.WriteLine("PS>Punch is loading...");
+            int pspLogoInt = random.Next(Strings.psaLogos.Count);
+            Console.WriteLine(Strings.psaLogos[pspLogoInt]);
+            Console.WriteLine("PS>Attack is loading...");
 
             // new punchstate
-            PunchState punchState = new PunchState();
+            AttackState attackState = new AttackState();
 
             //Decrypt modules
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -32,20 +32,18 @@ namespace PSPunch
             {
                 if (resource.Contains(".enc"))
                 {
-                    string fileName = resource.Replace("PSPunch.Modules.","").Replace(".ps1.enc","");
+                    string fileName = resource.Replace("PSAttack.Modules.","").Replace(".ps1.enc","");
                     string decFilename = CryptoUtils.DecryptString(fileName);
                     Console.ForegroundColor = PSColors.loadingText;
                     Console.WriteLine("Decrypting: " + decFilename);
                     Stream moduleStream = assembly.GetManifestResourceStream(resource);
-                    PSPUtils.ImportModules(punchState, moduleStream);
+                    PSAUtils.ImportModules(attackState, moduleStream);
                 }
             }
             // Setup PS env
-            punchState.cmd = "set-executionpolicy bypass -Scope process -Force";
-            Processing.PSExec(punchState);
-            punchState.cmd = "function Test-Admin { $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent(); $prp = New-Object System.Security.Principal.WindowsPrincipal($wid); $adm = [System.Security.Principal.WindowsBuiltInRole]::Administrator; $prp.IsInRole($adm);}; write-host 'Is Admin: '(test-admin)";
-            punchState = Processing.PSExec(punchState);
-
+            attackState.cmd = "set-executionpolicy bypass -Scope process -Force";
+            Processing.PSExec(attackState);
+            
             // Setup Console
             Console.BackgroundColor = PSColors.background;
             Console.Clear();
@@ -57,23 +55,23 @@ namespace PSPunch
             // Display Version and build date:
             Console.ForegroundColor = PSColors.introText;
             string buildString;
-            string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.attackDate.txt")).ReadToEnd();
+            string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSAttack.Resources.attackDate.txt")).ReadToEnd();
             if (attackDate.Length > 12)
             {
                 buildString = "It was custom made by PS>Attack on " + attackDate + "\n"; 
             }
             else
             {
-                string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSPunch.Resources.BuildDate.txt")).ReadToEnd();
-                buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Punch thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttack \n";
+                string buildDate = new StreamReader(assembly.GetManifestResourceStream("PSAttack.Resources.BuildDate.txt")).ReadToEnd();
+                buildString = "It was built on " + buildDate + "\nIf you'd like a version of PS>Attack thats even harder for AV \nto detect checkout http://github.com/jaredhaight/PSAttackBuildTool \n";
             }
             Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString);
             // Display Prompt
-            punchState.loopPos = 0;
-            punchState.cmdComplete = false;
-            Display.printPrompt(punchState);
+            attackState.loopPos = 0;
+            attackState.cmdComplete = false;
+            Display.printPrompt(attackState);
 
-            return punchState;
+            return attackState;
         }
 
         static void Main(string[] args)
@@ -87,7 +85,7 @@ namespace PSPunch
             }
             Console.Title = Strings.windowTitle;
             Console.BufferHeight = Int16.MaxValue - 10;
-            PunchState punchState = PSInit();
+            AttackState punchState = PSInit();
             // setup debug var
             String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version +"';'isAdmin'='"+isAdmin+"'}";
             punchState.cmd = debugCmd;

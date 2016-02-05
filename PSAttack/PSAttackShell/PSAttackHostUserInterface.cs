@@ -7,11 +7,11 @@ using System.Management.Automation.Host;
 using System.Security;
 using System.Text;
 
-namespace PSPunch.PSPunchShell
+namespace PSAttack.PSAttackShell
 {
-    class PSPunchHostUserInterface : PSHostUserInterface
+    class PSAttackHostUserInterface : PSHostUserInterface
     {
-        private PSPunchRawUserInterface PSPunchRawUI = new PSPunchRawUserInterface();
+        private PSAttackRawUserInterface PSAttackRawUI = new PSAttackRawUserInterface();
 
         // Function used for PromptForCredential
         private PSCredential GetCreds(string caption, string message)
@@ -56,7 +56,7 @@ namespace PSPunch.PSPunchShell
         {
             get
             {
-                return PSPunchRawUI;
+                return PSAttackRawUI;
             }
         }
 

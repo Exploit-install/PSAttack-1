@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PSPunch.PSPunchShell
+namespace PSAttack.PSAttackShell
 {
     [TypeConverter(typeof(PSParamType.PSParamObject))]
     public class PSParamType

@@ -5,15 +5,15 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
-using PSPunch.PSPunchShell;
-using PSPunch.Utils;
+using PSAttack.PSAttackShell;
+using PSAttack.Utils;
 
-namespace PSPunch.PSPunchProcessing
+namespace PSAttack.PSAttackProcessing
 {
     class Processing
     {
         // This is called everytime a key is pressed.
-        public static PunchState CommandProcessor(PunchState punchState)
+        public static AttackState CommandProcessor(AttackState punchState)
         {
             punchState.output = null;
             if (punchState.keyInfo.Key == ConsoleKey.Backspace)
@@ -71,7 +71,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         // called when up or down is entered
-        static PunchState history(PunchState punchState)
+        static AttackState history(AttackState punchState)
         {
             if (punchState.history.Count > 0)
             {
@@ -108,7 +108,7 @@ namespace PSPunch.PSPunchProcessing
         }
 
         // Here is where we execute posh code
-        public static PunchState PSExec(PunchState punchState)
+        public static AttackState PSExec(AttackState punchState)
         {
             using (Pipeline pipeline = punchState.runspace.CreatePipeline())
             {

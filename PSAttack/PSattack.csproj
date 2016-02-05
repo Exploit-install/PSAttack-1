@@ -7,13 +7,28 @@
     <ProjectGuid>{DA1B7904-0DDC-45A0-875F-33BBA2236C44}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PSPunch</RootNamespace>
-    <AssemblyName>PSPunch</AssemblyName>
+    <RootNamespace>PSAttack</RootNamespace>
+    <AssemblyName>PSAttack</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -77,21 +92,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PSPunchProcessing\TabExpansion.cs" />
-    <Compile Include="PSPunchShell\PSColors.cs" />
+    <Compile Include="PSAttackProcessing\TabExpansion.cs" />
+    <Compile Include="PSAttackShell\PSColors.cs" />
     <Compile Include="Utils\Display.cs" />
-    <Compile Include="PSPunchProcessing\PunchState.cs" />
+    <Compile Include="PSAttackProcessing\AttackState.cs" />
     <Compile Include="Utils\CryptoUtils.cs" />
-    <Compile Include="PSPunchProcessing\Processing.cs" />
+    <Compile Include="PSAttackProcessing\Processing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PSPunchShell\PSParameter.cs" />
-    <Compile Include="PSPunchShell\PSParamType.cs" />
-    <Compile Include="PSPunchShell\PSPunchHost.cs" />
-    <Compile Include="PSPunchShell\PSPunchHostRawUserInterface.cs" />
-    <Compile Include="PSPunchShell\PSPunchHostUserInterface.cs" />
+    <Compile Include="PSAttackShell\PSParameter.cs" />
+    <Compile Include="PSAttackShell\PSParamType.cs" />
+    <Compile Include="PSAttackShell\PSAttackHost.cs" />
+    <Compile Include="PSAttackShell\PSAttackHostRawUserInterface.cs" />
+    <Compile Include="PSAttackShell\PSAttackHostUserInterface.cs" />
     <Compile Include="Strings.cs" />
-    <Compile Include="Utils\PSPUtils.cs" />
+    <Compile Include="Utils\PSAUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -126,6 +141,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Modules\key.txt" />
     <Content Include="punch_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
