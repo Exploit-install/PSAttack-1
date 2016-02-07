@@ -22,10 +22,10 @@ namespace PSAttack
             Console.WriteLine(Strings.psaLogos[pspLogoInt]);
             Console.WriteLine("PS>Attack is loading...");
 
-            // new attack
+            // create attackState
             AttackState attackState = new AttackState();
 
-            //Decrypt modules
+            // Decrypt modules
             Assembly assembly = Assembly.GetExecutingAssembly();
             string[] resources = assembly.GetManifestResourceNames();
             foreach (string resource in resources)
@@ -43,8 +43,22 @@ namespace PSAttack
             // Setup PS env
             attackState.cmd = "set-executionpolicy bypass -Scope process -Force";
             Processing.PSExec(attackState);
-            
+
+            // check for admin 
+            Boolean isAdmin = false;
+            if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                isAdmin = true;
+                System.Diagnostics.Process.EnterDebugMode();
+            }
+            // setup debug variable
+            String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version + "';'isAdmin'='" + isAdmin + "'}";
+            attackState.cmd = debugCmd;
+            Processing.PSExec(attackState);
+
             // Setup Console
+            Console.Title = Strings.windowTitle;
+            Console.BufferHeight = Int16.MaxValue - 10;
             Console.BackgroundColor = PSColors.background;
             Console.Clear();
 
@@ -52,7 +66,7 @@ namespace PSAttack
             Console.ForegroundColor = PSColors.errorText;
             Console.WriteLine(Strings.warning);
 
-            // Display Version and build date:
+            // display intro text
             Console.ForegroundColor = PSColors.introText;
             string buildString;
             string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSAttack.Resources.attackDate.txt")).ReadToEnd();
@@ -67,8 +81,7 @@ namespace PSAttack
             }
             Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString);
             // Display Prompt
-            attackState.loopPos = 0;
-            attackState.cmdComplete = false;
+            attackState.ClearLoop();
             Display.printPrompt(attackState);
 
             return attackState;
@@ -76,20 +89,7 @@ namespace PSAttack
 
         static void Main(string[] args)
         {
-            // check for admin 
-            Boolean isAdmin = false;
-            if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
-            {
-                isAdmin = true;
-                System.Diagnostics.Process.EnterDebugMode();
-            }
-            Console.Title = Strings.windowTitle;
-            Console.BufferHeight = Int16.MaxValue - 10;
             AttackState attackState = PSInit();
-            // setup debug var
-            String debugCmd = "$debug = @{'.NET'='" + System.Environment.Version +"';'isAdmin'='"+isAdmin+"'}";
-            attackState.cmd = debugCmd;
-            Processing.PSExec(attackState);
             while (true)
             {
                 attackState.keyInfo = Console.ReadKey();

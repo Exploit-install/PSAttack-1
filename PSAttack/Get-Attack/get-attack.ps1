@@ -4,7 +4,7 @@
   Find a PowerShell attack for a given keyword
 
   .DESCRIPTION
-  Get-Attack will return a list of attacks available in PS>Attack for a given search query.
+  Get-Attack will return a list of attacks available in PS>Attack for a given search query. Running it without a term to search for will print out a PS>Attack help message.
 
   .EXAMPLE
   PS> Get-Attack password
@@ -19,7 +19,7 @@
   [CmdletBinding()]
   param
   (
-    [Parameter(HelpMessage='What are we search for?')]
+    [Parameter(HelpMessage='What are we searching for?')]
     [string[]]$term = ""
   )
 
@@ -154,7 +154,7 @@ Powercat\Powercat.ps1,Powercat,Recon; Exfiltration; Backdoors,Netcat - The Power
 	if ($term) 
 	{
 		Write-Verbose "Searching Attacks for $term.."
-		$results = $attacks | Where-Object {$_.Description -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"} | format-list
+		$results = $attacks | Where-Object {$_.Description -like "*" + $term + "*" -or $_.Type -like "*" + $term + "*"}
 		return $results
 	}
 	else

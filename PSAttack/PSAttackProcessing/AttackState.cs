@@ -83,6 +83,9 @@ namespace PSAttack.PSAttackProcessing
             this.runspace = runspace;
             // init history
             this.history = new List<string>();
+            // hack to keep cmd from being null. others parts of psa don't appreciate that.
+            this.cmd = "";
+            this.displayCmd = "";
         }
     }
 }

@@ -19,7 +19,7 @@ namespace PSAttack.PSAttackProcessing
             if (attackState.keyInfo.Key == ConsoleKey.Backspace)
             {
                 attackState.ClearLoop();
-                if (attackState.displayCmd != null && attackState.displayCmd.Length > 0)
+                if (attackState.displayCmd != "" && attackState.displayCmd.Length > 0)
                 {
                     attackState.displayCmd = attackState.displayCmd.Remove(attackState.displayCmd.Length - 1);
                 }
@@ -32,8 +32,12 @@ namespace PSAttack.PSAttackProcessing
             {
                 Console.WriteLine("\n");
                 attackState.ClearLoop();
+                // don't add blank lines to history
                 attackState.cmd = attackState.displayCmd;
-                attackState.history.Add(attackState.cmd);
+                if (attackState.cmd != "")
+                {
+                    attackState.history.Add(attackState.cmd);
+                }
                 if (attackState.cmd == "exit")
                 {
                     System.Environment.Exit(0);
@@ -51,11 +55,13 @@ namespace PSAttack.PSAttackProcessing
                     attackState = Processing.PSExec(attackState);
                     Display.Output(attackState);
                 }
-                else if (attackState.cmd != null)
+                // assume that we just want to execute whatever makes it here.
+                else
                 {
                     attackState = Processing.PSExec(attackState);
                     Display.Output(attackState);
                 }
+                // clear out cmd related stuff from state
                 attackState.ClearIO(display:true);
             }
             else if (attackState.keyInfo.Key == ConsoleKey.Tab)
