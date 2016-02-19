@@ -16,6 +16,8 @@ namespace PSAttack.PSAttackProcessing
         public static AttackState CommandProcessor(AttackState attackState)
         {
             attackState.output = null;
+            int relativePos = attackState.relativeCursorPos();
+            int cmdLength = attackState.displayCmd.Length;
             /////////////////////////
             // BACKSPACE OR DELETE //
             /////////////////////////
@@ -58,13 +60,17 @@ namespace PSAttack.PSAttackProcessing
             ///////////////////
             // LEFT OR RIGHT //
             ///////////////////
-            else if (attackState.keyInfo.Key == ConsoleKey.LeftArrow || attackState.keyInfo.Key == ConsoleKey.RightArrow)
+            else if (attackState.keyInfo.Key == ConsoleKey.LeftArrow)
             {
-                if (attackState.keyInfo.Key == ConsoleKey.LeftArrow)
+                if (attackState.relativeCursorPos() > 0)
                 {
                     attackState.cursorPos -= 1;
                 }
-                else
+                return attackState;
+            }
+            else if (attackState.keyInfo.Key == ConsoleKey.RightArrow)
+            {
+                if (attackState.relativeCursorPos() < attackState.displayCmd.Length)
                 {
                     attackState.cursorPos += 1;
                 }
