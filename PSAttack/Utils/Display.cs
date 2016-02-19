@@ -37,6 +37,7 @@ namespace PSAttack.Utils
             }
             Console.SetCursorPosition(prompt.Length, attackState.promptPos);
             Console.Write(attackState.displayCmd);
+            Console.SetCursorPosition(attackState.cursorPos, attackState.promptPos);
         }
 
         public static void Exception(AttackState attackState, string errorMsg)
@@ -52,6 +53,7 @@ namespace PSAttack.Utils
             Console.ForegroundColor = PSColors.prompt;
             Console.Write(prompt);
             Console.ForegroundColor = PSColors.inputText;
+            attackState.cursorPos = prompt.Length;
         }
     }
 }

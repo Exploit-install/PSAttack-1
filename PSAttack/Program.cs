@@ -24,6 +24,7 @@ namespace PSAttack
 
             // create attackState
             AttackState attackState = new AttackState();
+            attackState.cursorPos = Display.createPrompt(attackState).Length;
 
             // Decrypt modules
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -82,6 +83,7 @@ namespace PSAttack
             Console.WriteLine(Strings.welcomeMessage, Strings.version, buildString);
             // Display Prompt
             attackState.ClearLoop();
+            attackState.ClearIO();
             Display.printPrompt(attackState);
 
             return attackState;

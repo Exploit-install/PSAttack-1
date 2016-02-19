@@ -6,6 +6,7 @@ using System.Text;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using PSAttack.PSAttackShell;
+using PSAttack.Utils;
 
 namespace PSAttack.PSAttackProcessing
 {
@@ -35,6 +36,9 @@ namespace PSAttack.PSAttackProcessing
 
         // The vertical position of the last prompt printed. Used so we know where to start re-writing commands
         public int promptPos { get; set; }
+
+        // cusor position
+        public int cursorPos { get; set; }
         
         // loop states
         public string loopType { get; set; }
@@ -50,6 +54,12 @@ namespace PSAttack.PSAttackProcessing
 
         // used to store command history
         public List<string> history { get; set; }
+
+        // return cursor pos in relation to displayCmd
+        public int relativeCursorPos()
+        {
+            return this.cursorPos - Display.createPrompt(this).Length;
+        }
 
         // clear out cruft from autocomplete loops
         public void ClearLoop()

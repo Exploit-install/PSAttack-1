@@ -16,24 +16,69 @@ namespace PSAttack.PSAttackProcessing
         public static AttackState CommandProcessor(AttackState attackState)
         {
             attackState.output = null;
-            if (attackState.keyInfo.Key == ConsoleKey.Backspace)
+            /////////////////////////
+            // BACKSPACE OR DELETE //
+            /////////////////////////
+            if (attackState.keyInfo.Key == ConsoleKey.Backspace || attackState.keyInfo.Key == ConsoleKey.Delete)
             {
                 attackState.ClearLoop();
-                if (attackState.displayCmd != "" && attackState.displayCmd.Length > 0)
+                if (attackState.displayCmd != "" && attackState.relativeCursorPos() > 0)
                 {
-                    attackState.displayCmd = attackState.displayCmd.Remove(attackState.displayCmd.Length - 1);
+                    if (attackState.keyInfo.Key == ConsoleKey.Backspace)
+                    {
+                        attackState.cursorPos -= 1;
+                    }
+                    List<char> displayCmd = attackState.displayCmd.ToList();
+                    int relativeCursorPos = attackState.cursorPos - Display.createPrompt(attackState).Length;
+                    displayCmd.RemoveAt(relativeCursorPos);
+                    attackState.displayCmd = new string(displayCmd.ToArray());
                 }
             }
+            /////////////////////////
+            // BACKSPACE OR DELETE //
+            /////////////////////////
+            else if (attackState.keyInfo.Key == ConsoleKey.Home || attackState.keyInfo.Key == ConsoleKey.End)
+            {
+                if (attackState.keyInfo.Key == ConsoleKey.Home)
+                {
+                    attackState.cursorPos = Display.createPrompt(attackState).Length;
+                }
+                else
+                {
+                    attackState.cursorPos = Display.createPrompt(attackState).Length + attackState.displayCmd.Length;
+                }
+            }
+            ////////////////
+            // UP OR DOWN //
+            ////////////////
             else if (attackState.keyInfo.Key == ConsoleKey.UpArrow || attackState.keyInfo.Key == ConsoleKey.DownArrow)
             {
                 return history(attackState);
             }
+            ///////////////////
+            // LEFT OR RIGHT //
+            ///////////////////
+            else if (attackState.keyInfo.Key == ConsoleKey.LeftArrow || attackState.keyInfo.Key == ConsoleKey.RightArrow)
+            {
+                if (attackState.keyInfo.Key == ConsoleKey.LeftArrow)
+                {
+                    attackState.cursorPos -= 1;
+                }
+                else
+                {
+                    attackState.cursorPos += 1;
+                }
+                return attackState;
+            }
+            ///////////
+            // ENTER //
+            ///////////
             else if (attackState.keyInfo.Key == ConsoleKey.Enter)
             {
                 Console.WriteLine("\n");
                 attackState.ClearLoop();
-                // don't add blank lines to history
                 attackState.cmd = attackState.displayCmd;
+                // don't add blank lines to history
                 if (attackState.cmd != "")
                 {
                     attackState.history.Add(attackState.cmd);
@@ -49,6 +94,7 @@ namespace PSAttack.PSAttackProcessing
                     Display.printPrompt(attackState);
 
                 }
+                // TODO: Make this better.
                 else if (attackState.cmd.Contains(".exe"))
                 {
                     attackState.cmd = "Start-Process -NoNewWindow -Wait " + attackState.cmd;
@@ -64,14 +110,24 @@ namespace PSAttack.PSAttackProcessing
                 // clear out cmd related stuff from state
                 attackState.ClearIO(display:true);
             }
+            /////////
+            // TAB //
+            /////////
             else if (attackState.keyInfo.Key == ConsoleKey.Tab)
             {
                return TabExpansion.Process(attackState);
             }
+            //////////
+            // if nothing matched, lets assume its a character and add it to displayCmd
+            //////////
             else
             {
                 attackState.ClearLoop();
-                attackState.displayCmd += attackState.keyInfo.KeyChar;
+                attackState.cursorPos += 1;
+                // figure out where to insert the typed character
+                List<char> displayCmd = attackState.displayCmd.ToList();
+                displayCmd.Insert(attackState.relativeCursorPos() - 1, attackState.keyInfo.KeyChar);
+                attackState.displayCmd = new string(displayCmd.ToArray());
             }
             return attackState;
         }
