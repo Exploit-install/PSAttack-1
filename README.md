@@ -1,4 +1,4 @@
-_PS>Attack is available as a beta. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/psattack/releases/)_
+_PS>Attack is available as a Release Candidate. You can see where the project is at and download a precompiled binary of the alpha [here](https://github.com/jaredhaight/psattack/releases/)_
 
 _It's under heavy, active development. Version "1.0" will be released at this years [CarolinaCon](http://www.carolinacon.org). I'm writing an ongoing series of articles about where this project is at [here](http://www.psattack.com/tags/psattack/)_
 
