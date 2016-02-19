@@ -106,7 +106,7 @@ namespace PSAttack
         public static string warning = @"
  ############################################################
  #                                                          #
- #    PLEASE NOTE: This is a beta release of PS>Attack      #
+ #  PLEASE NOTE: This is an Release Candidate of PS>Attack  #
  #   Things might be buggy. If you find something that's    #
  #             broken please submit an issue at             #
  #     https://github.com/jaredhaight/psattack/issues       #
