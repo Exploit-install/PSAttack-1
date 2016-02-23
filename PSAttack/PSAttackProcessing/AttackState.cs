@@ -61,6 +61,12 @@ namespace PSAttack.PSAttackProcessing
             return this.cursorPos - Display.createPrompt(this).Length;
         }
 
+        // return end of displayCmd accounting for prompt
+        public int endOfDisplayCmdPos()
+        {
+            return Display.createPrompt(this).Length + this.displayCmd.Length;
+        }
+
         // clear out cruft from autocomplete loops
         public void ClearLoop()
         {

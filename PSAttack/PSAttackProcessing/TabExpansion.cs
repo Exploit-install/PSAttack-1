@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSAttack.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -107,6 +108,7 @@ namespace PSAttack.PSAttackProcessing
                         break;
                 }
                 attackState.displayCmd = attackState.displayCmdSeed + seperator + result;
+                attackState.cursorPos = attackState.endOfDisplayCmdPos();
             }
             return attackState;
         }

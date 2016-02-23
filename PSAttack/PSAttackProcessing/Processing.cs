@@ -171,6 +171,7 @@ namespace PSAttack.PSAttackProcessing
                         attackState.displayCmd = attackState.history[attackState.loopPos];
                     }
                 }
+                attackState.cursorPos = attackState.endOfDisplayCmdPos();
             }
             return attackState;
         }
