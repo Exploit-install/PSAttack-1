@@ -73,7 +73,7 @@ namespace PSAttack
             string attackDate = new StreamReader(assembly.GetManifestResourceStream("PSAttack.Resources.attackDate.txt")).ReadToEnd();
             if (attackDate.Length > 12)
             {
-                buildString = "It was custom made by PS>Attack on " + attackDate + "\n"; 
+                buildString = "It was custom made by the PS>Attack Build Tool on " + attackDate + "\n"; 
             }
             else
             {
