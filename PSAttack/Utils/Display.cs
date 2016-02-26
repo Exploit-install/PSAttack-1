@@ -37,7 +37,13 @@ namespace PSAttack.Utils
             }
             Console.SetCursorPosition(prompt.Length, attackState.promptPos);
             Console.Write(attackState.displayCmd);
-            Console.SetCursorPosition(attackState.cursorPos, attackState.promptPos);
+            //int promptAdjust = 0;
+            //if (attackState.cursorPos > Console.WindowWidth)
+            //{
+            //    promptAdjust = attackState.cursorPos / Console.WindowWidth;
+            //    attackState.cursorPos = attackState.cursorPos - Console.WindowWidth;              
+            //}
+            //Console.SetCursorPosition(attackState.cursorPos, attackState.promptPos + promptAdjust);
         }
 
         public static void Exception(AttackState attackState, string errorMsg)
