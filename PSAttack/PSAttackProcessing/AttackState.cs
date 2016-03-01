@@ -55,10 +55,34 @@ namespace PSAttack.PSAttackProcessing
         // used to store command history
         public List<string> history { get; set; }
 
-        // return cursor pos in relation to displayCmd
+        // returns total length of display cmd + prompt. Used to check for text wrap in 
+        // so we know what to do with our cursor
+        public int totalDisplayLength()
+        {
+            return Display.createPrompt(this).Length + this.displayCmd.Length;
+        }
+
+        public int consoleWrapCount()
+        {
+            return Console.CursorTop - this.promptPos;
+        }
+
+        // return cursor pos ignoring window wrapping
         public int relativeCursorPos()
         {
-            return this.cursorPos - Display.createPrompt(this).Length;
+            int wrapCount = this.consoleWrapCount();
+            if (wrapCount > 0)
+            {
+                return this.cursorPos + Console.WindowWidth * wrapCount;
+            }
+            return this.cursorPos;
+        }
+
+        // return relative cusor pos without prompt
+        public int relativeCmdCursorPos()
+        {
+            int promptLength = Display.createPrompt(this).Length;
+            return this.relativeCursorPos() - promptLength;
         }
 
         // return end of displayCmd accounting for prompt

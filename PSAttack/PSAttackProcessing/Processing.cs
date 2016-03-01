@@ -31,7 +31,7 @@ namespace PSAttack.PSAttackProcessing
                         attackState.cursorPos -= 1;
                     }
                     List<char> displayCmd = attackState.displayCmd.ToList();
-                    int relativeCursorPos = attackState.cursorPos - Display.createPrompt(attackState).Length;
+                    int relativeCursorPos = attackState.relativeCmdCursorPos();
                     displayCmd.RemoveAt(relativeCursorPos);
                     attackState.displayCmd = new string(displayCmd.ToArray());
                 }
@@ -60,9 +60,11 @@ namespace PSAttack.PSAttackProcessing
             ///////////////////
             // LEFT OR RIGHT //
             ///////////////////
+
+            // TODO: Fix arrows navigating between wrapped command lines
             else if (attackState.keyInfo.Key == ConsoleKey.LeftArrow)
             {
-                if (attackState.relativeCursorPos() > 0)
+                if (attackState.relativeCmdCursorPos() > 0)
                 {
                     attackState.cursorPos -= 1;
                 }
@@ -70,7 +72,7 @@ namespace PSAttack.PSAttackProcessing
             }
             else if (attackState.keyInfo.Key == ConsoleKey.RightArrow)
             {
-                if (attackState.relativeCursorPos() < attackState.displayCmd.Length)
+                if (attackState.relativeCmdCursorPos() < attackState.displayCmd.Length)
                 {
                     attackState.cursorPos += 1;
                 }
@@ -130,9 +132,15 @@ namespace PSAttack.PSAttackProcessing
             {
                 attackState.ClearLoop();
                 attackState.cursorPos += 1;
+                // reset cursorpos if wrap
+                if (attackState.cursorPos >= Console.WindowWidth)
+                {
+                    attackState.cursorPos = attackState.cursorPos - Console.WindowWidth;
+                }
                 // figure out where to insert the typed character
                 List<char> displayCmd = attackState.displayCmd.ToList();
-                displayCmd.Insert(attackState.relativeCursorPos() - 1, attackState.keyInfo.KeyChar);
+                int relativeCmdCursorPos = attackState.relativeCmdCursorPos();
+                displayCmd.Insert(attackState.relativeCmdCursorPos() - 1, attackState.keyInfo.KeyChar);
                 attackState.displayCmd = new string(displayCmd.ToArray());
             }
             return attackState;
