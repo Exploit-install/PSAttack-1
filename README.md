@@ -40,9 +40,9 @@ You can find a list of commands included in PS>Attack [here](https://docs.google
 
 
 #### How to use it
-PS>Attack works best when you generate your own version through the [PS>Attack Build Tool](https://www.github.com/jaredhaight/PSAttackBuildTool). The build tool will handle downloading PS>Attack, updating the modules to the latest versions, encrypting them with a custom key and then compiling the whole thing.
+PS>Attack is available as a pre-compiled binary on the [releases tab](https://www.github.com/jaredhaight/PSAttack/releases/). No setup or install is required, you can just download it and run.
 
-If you want to just try PS>Attack, you can download a compiled release from the [releases](https://www.github.com/jaredhaight/PSAttack/releases/) tab. This binary will work, but the modules may be out of date and the encrypted files aren't custom so they're going to be much easier to spot by AV or IR teams. 
+Another option is to use the [PS>Attack Build Tool](https://www.github.com/jaredhaight/PSAttackBuildTool). The build tool handles downloading PS>Attack, updating the modules to the latest versions, encrypting them with a unique key and then compiling the whole thing. The end result is a custom version of PS>Attack that has all the latest tools and a custom file signature thanks to the unique key.
 
 Of course, you can also just clone the repo and compile the code yourself. You can use Visual Studio Community Edition to work with it and compie it.
 
