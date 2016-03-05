@@ -28,7 +28,7 @@
 
     $attacksCSV = 'Module,Command,Type,Description
 PowershellMafia\Invoke-Mimikatz.ps1,Invoke-Mimikatz,Passwords,This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to reflectively load Mimikatz completely in memory. This allows you to do things such as dump credentials without ever writing the mimikatz binary to disk. The script has a ComputerName parameter which allows it to be executed against multiple computers.
-PowershellMafia\Invoke-GPPPassword.ps1,Get-GPPPassword,Passwords,Retrieves the plaintext password and other information for accounts pushed through Group Policy Preferences.
+PowershellMafia\Get-GPPPassword.ps1,Get-GPPPassword,Passwords,Retrieves the plaintext password and other information for accounts pushed through Group Policy Preferences.
 PowershellMafia\Invoke-NinjaCopy.ps1,Invoke-NinjaCopy,Exfiltration,This script can copy files off an NTFS volume by opening a read handle to the entire volume (such as c:) and parsing the NTFS structures. This requires you are an administrator of the server.
 PowershellMafia\Invoke-Shellcode.ps1,Invoke-Shellcode,Code Execution,Inject shellcode into the process ID of your choosing or within the context of the running PowerShell process.
 PowershellMafia\Invoke-WMICommand.ps1,Invoke-WMICommand,Code Execution,Executes a PowerShell ScriptBlock on a target computer using WMI as a pure C2 channel.

@@ -64,8 +64,8 @@ namespace PSAttack
             Console.Clear();
 
             // Display alpha warning
-            Console.ForegroundColor = PSColors.errorText;
-            Console.WriteLine(Strings.warning);
+            //Console.ForegroundColor = PSColors.errorText;
+            //Console.WriteLine(Strings.warning);
 
             // display intro text
             Console.ForegroundColor = PSColors.introText;
